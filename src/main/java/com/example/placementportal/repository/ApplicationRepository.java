@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     Optional<Application> findByStudentIdAndCompanyId(Long studentId, Long companyId);
     List<Application> findByCompanyId(Long companyId);
+    void deleteByCompanyId(Long companyId);
     List<Application> findByStudentId(Long studentId);
 }

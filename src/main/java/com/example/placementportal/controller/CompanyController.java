@@ -1,8 +1,10 @@
 package com.example.placementportal.controller;
 
 import com.example.placementportal.model.Company;
+import com.example.placementportal.repository.ApplicationRepository;
 import com.example.placementportal.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,9 @@ public class CompanyController {
 
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
     private void mapCompanyFields(Company company, Map<String, String> payload) {
         company.setCompanyName(payload.getOrDefault("companyName", company.getCompanyName()));
@@ -118,12 +123,14 @@ public class CompanyController {
 
     // ✅ 5. Delete company by ID
     @DeleteMapping("/delete/{id}")
+    @Transactional
     public String deleteCompany(@PathVariable Long id) {
         if (!companyRepository.existsById(id)) {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Company not found with id: " + id);
         }
+        applicationRepository.deleteByCompanyId(id);
         companyRepository.deleteById(id);
-        return "Company deleted with ID: " + id;
+        return "Company and related applications deleted with ID: " + id;
     }
 
     // ✅ 6. Get company by ID

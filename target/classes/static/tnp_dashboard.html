@@ -712,7 +712,8 @@
         const r = await deletePlacementDrive(id);
         if (r.ok) {
             showMessage("Drive deleted"); 
-            loadCompanies(); 
+            loadCompanies();
+            loadApplications();
         } else {
             showMessage(r.error || "Delete failed", true);
         }
@@ -849,6 +850,7 @@
             if(r.ok) {
                 showMessage(`${studentName} → ${newStatus}`);
                 await loadApplications();
+                await loadStudents();
             } else {
                 showMessage(r.error || "Update failed", true);
             }
@@ -974,15 +976,29 @@
         filteredApplications = applicationsData.filter(app => {
             const s = (app.student?.name || app.studentName || "").toLowerCase();
             const c = (app.company?.companyName || app.companyName || "").toLowerCase();
-            const stat = app.status || "Pending";
+            const stat = app.resultStatus || "Pending";
             return s.includes(student) && c.includes(company) && (status === "" || stat === status);
         });
         renderApplications();
         updateStats();
     }
     function clearFilters() { document.getElementById('filterStudent').value = ""; document.getElementById('filterCompanyApp').value = ""; document.getElementById('filterStatus').value = ""; filteredApplications = [...applicationsData]; renderApplications(); updateStats(); }
-    function updateStats() { const total=applicationsData.length, pending=applicationsData.filter(a=>(a.status||"Pending")==="Pending").length, accepted=applicationsData.filter(a=>a.status==="Accepted"||a.status==="Placed").length, rejected=applicationsData.filter(a=>a.status==="Rejected").length;
-        document.getElementById('totalApps').textContent=total; document.getElementById('pendingApps').textContent=pending; document.getElementById('acceptedApps').textContent=accepted; document.getElementById('rejectedApps').textContent=rejected; }
+    function updateStats() {
+        const total = applicationsData.length;
+        const pending = applicationsData.filter(a => {
+            const s = (a.resultStatus || '').toLowerCase();
+            return s === '' || s === 'pending' || s === 'applied';
+        }).length;
+        const accepted = applicationsData.filter(a => {
+            const s = (a.resultStatus || '').toLowerCase();
+            return s === 'accepted' || s === 'placed' || s === 'selected' || s === 'offer';
+        }).length;
+        const rejected = applicationsData.filter(a => (a.resultStatus || '').toLowerCase() === 'rejected').length;
+        document.getElementById('totalApps').textContent = total;
+        document.getElementById('pendingApps').textContent = pending;
+        document.getElementById('acceptedApps').textContent = accepted;
+        document.getElementById('rejectedApps').textContent = rejected;
+    }
     function viewApplicationsByCompany(cname) { switchTab('applications'); document.getElementById('filterCompanyApp').value = cname; filterApplications(); }
     function viewDetails(appId) {
         const app = applicationsData.find(a => a.id == appId);
