@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Placement Companies | PCCOER T&P Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #eef2ff;
+            --secondary: #7209b7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #fafcff;
+            --dark: #0f172a;
+            --gray: #475569;
+            --gray-light: #64748b;
+            --border-light: #e2e8f0;
+            --border-radius-xl: 24px;
+            --border-radius-lg: 20px;
+            --border-radius-md: 16px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.02);
+            --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.15);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafd 0%, #f1f5f9 100%);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px 32px;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.12);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Header Section */
+        .hero-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding: 40px 20px 20px;
+        }
+
+        .hero-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 32px 0 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px 32px;
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid var(--border-light);
+            min-width: 160px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Search Filters Section - Enhanced */
+        .filters-card {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+            border: 1px solid var(--border-light);
+        }
+
+        .filters-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .filters-header i {
+            font-size: 28px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 10px;
+            border-radius: 14px;
+        }
+
+        .filters-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .filter-label i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .filter-input {
+            padding: 14px 18px;
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--light);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+            background: white;
+        }
+
+        .filter-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -8px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn-secondary {
+            padding: 14px 32px;
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--border-light);
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+            border-color: var(--gray-light);
+        }
+
+        /* Company Cards Grid - Modern Card Layout */
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .company-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        .company-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .company-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-name i {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-open {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .status-closed {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .card-body {
+            padding: 20px 24px;
+        }
+
+        .skills-section {
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            color: var(--gray-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .criteria-box {
+            background: #fef9e6;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .criteria-box i {
+            font-size: 1.3rem;
+            color: var(--warning);
+        }
+
+        .criteria-text {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .criteria-note {
+            font-size: 0.7rem;
+            color: var(--success);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            border: 1px solid var(--border-light);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .empty-text {
+            color: var(--gray);
+            max-width: 450px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Loading State */
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0 30px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-light);
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            .nav-bar {
+                padding: 12px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-header h1 {
+                font-size: 2rem;
+            }
+            .stats-grid {
+                gap: 12px;
+            }
+            .stat-card {
+                padding: 14px 20px;
+                min-width: 120px;
+            }
+            .stat-value {
+                font-size: 1.8rem;
+            }
+            .filters-card {
+                padding: 20px;
+            }
+            .companies-grid {
+                grid-template-columns: 1fr;
+            }
+            .filter-actions {
+                flex-direction: column;
+            }
+            .btn-primary, .btn-secondary {
+                justify-content: center;
+            }
+        }
+    </style>
+    <script src="api.js"></script>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="nav-bar">
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fas fa-briefcase"></i>
+        </div>
+        <div class="logo-text">
+            <h1>PCCOER Placements</h1>
+            <p>Training & Placement Cell</p>
+        </div>
+    </div>
+    <div class="nav-links">
+        <a href="HomePage.html"><i class="fas fa-home"></i> Home</a>
+        <a href="student_login.html"><i class="fas fa-user-graduate"></i> Student Portal</a>
+        <a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero-header">
+        <h1>🚀 Placement Opportunities</h1>
+        <p>Discover top recruiters, explore skill requirements, and find your ideal career match. Filter companies based on your skills and CGPA.</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-value" id="totalCompanies">0</span>
+            <span class="stat-label">Total Companies</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="openCompanies">0</span>
+            <span class="stat-label">Active Drives</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="avgCGPA">0.0</span>
+            <span class="stat-label">Avg. CGPA Required</span>
+        </div>
+    </div>
+
+    <!-- Enhanced Filters Section (Company Name removed) -->
+    <div class="filters-card">
+        <div class="filters-header">
+            <i class="fas fa-sliders-h"></i>
+            <h2>Smart Filters</h2>
+        </div>
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label class="filter-label">
+                    <i class="fas fa-code"></i> Skills
+                </label>
+                <input type="text" id="skillFilter" class="filter-input" placeholder="e.g., Java, Python, React, SQL">
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">
+                    <i class="fas fa-graduation-cap"></i> Your CGPA
+                </label>
+                <input type="number" id="cgpaFilter" class="filter-input" placeholder="Enter your CGPA (e.g., 7.5)" step="0.1" min="0" max="10">
+            </div>
+        </div>
+        <div class="filter-actions">
+            <button class="btn-primary" onclick="searchCompanies()">
+                <i class="fas fa-search"></i> Find Matching Companies
+            </button>
+            <button class="btn-secondary" onclick="resetFilters()">
+                <i class="fas fa-undo-alt"></i> Clear All Filters
+            </button>
+            <button class="btn-secondary" onclick="refreshCompanies()">
+                <i class="fas fa-sync"></i> Refresh Companies
+            </button>
+        </div>
+    </div>
+
+    <!-- Companies Grid -->
+    <div id="companiesContainer">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p style="color: var(--gray);">Loading companies...</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 PCCOER Training & Placement Cell | Pimpri Chinchwad College of Engineering & Research, Pune</p>
+        <p style="margin-top: 8px; font-size: 0.75rem;">
+            <i class="fas fa-info-circle"></i> If you are logged in, this view shows companies eligible for your profile based on skills and CGPA. Otherwise, you can browse all available drives.
+        </p>
+    </div>
+</div>
+
+<script>
+    let allCompanies = [];
+    let filteredCompanies = [];
+
+    // Load companies on page load
+    document.addEventListener("DOMContentLoaded", async function() {
+        const studentId = getStudentId();
+        await loadCompanies(studentId);
+        updateStats();
+    });
+
+    function getStudentId() {
+        return localStorage.getItem("studentId");
+    }
+
+    async function loadCompanies(studentId = null) {
+        const container = document.getElementById("companiesContainer");
+        const token = localStorage.getItem("token");
+        
+        try {
+            let data;
+            if (studentId && token) {
+                const r = await apiFetch(`/student/eligible/${studentId}`);
+                if (!r.ok) throw new Error(r.error || `Status ${r.status}`);
+                data = r.data;
+            } else {
+                const r = await apiFetch('/api/company/all');
+                if (!r.ok) throw new Error(r.error || `Status ${r.status}`);
+                data = r.data;
+            }
+            
+            allCompanies = Array.isArray(data) ? data : [];
+            filteredCompanies = [...allCompanies];
+            
+            if (allCompanies.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            displayCompanies(allCompanies);
+        } catch (error) {
+            console.error("Error loading companies:", error);
+            const errorText = studentId ? `Unable to load eligible companies right now. (${error.message})` : `Unable to load company drives right now. (${error.message})`;
+            document.getElementById("companiesContainer").innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="empty-title">Data Unavailable</div>
+                    <div class="empty-text">${errorText}</div>
+                    <button class="btn-secondary" onclick="refreshCompanies()" style="margin-top: 24px;">
+                        <i class="fas fa-redo-alt"></i> Retry
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    function displayCompanies(companies) {
+        const container = document.getElementById("companiesContainer");
+        
+        if (!companies || companies.length === 0) {
+            showEmptyState();
+            return;
+        }
+        
+        container.innerHTML = `
+            <div class="companies-grid">
+                ${companies.map(company => `
+                    <div class="company-card">
+                        <div class="card-header">
+                            <div class="company-name">
+                                <i class="fas fa-building"></i>
+                                ${escapeHtml(company.companyName)}
+                            </div>
+                            <div class="status-badge ${company.status === 'Open' ? 'status-open' : 'status-closed'}">
+                                <i class="fas ${company.status === 'Open' ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                                ${company.status}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="skills-section">
+                                <div class="section-label">
+                                    <i class="fas fa-tools"></i> Required Skills
+                                </div>
+                                <div class="skills-list">
+                                    ${formatSkills(company.skills)}
+                                </div>
+                            </div>
+                            <div class="criteria-box">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div>
+                                    <div class="criteria-text">Eligibility: ${escapeHtml(company.criteria || "Not specified")}</div>
+                                    <div class="criteria-note">
+                                        <i class="fas fa-check-circle"></i> Inclusive criteria — meet or exceed to qualify
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function formatSkills(skillsString) {
+        if (!skillsString) return '<span style="color: var(--gray-light);">Not specified</span>';
+        
+        const skills = skillsString.split(',').map(s => s.trim());
+        return skills.map(skill => `<span class="skill-tag">${escapeHtml(skill)}</span>`).join('');
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function searchCompanies() {
+        const skillQuery = document.getElementById("skillFilter").value.trim().toLowerCase();
+        const cgpaQuery = parseFloat(document.getElementById("cgpaFilter").value.trim());
+        
+        filteredCompanies = allCompanies.filter(company => {
+            // Filter by skill
+            if (skillQuery && !company.skills.toLowerCase().includes(skillQuery)) {
+                return false;
+            }
+            
+            // Filter by CGPA (inclusive logic)
+            if (!isNaN(cgpaQuery) && company.criteria) {
+                const criteriaText = company.criteria.toLowerCase();
+                const cgpaMatch = criteriaText.match(/(\d+(\.\d+)?)/);
+                
+                if (cgpaMatch) {
+                    const requiredCGPA = parseFloat(cgpaMatch[0]);
+                    
+                    // Check for comparison operators
+                    if (criteriaText.includes('>=') || criteriaText.includes('≥')) {
+                        if (cgpaQuery < requiredCGPA) return false;
+                    } else if (criteriaText.includes('>')) {
+                        if (cgpaQuery <= requiredCGPA) return false;
+                    } else if (criteriaText.includes('<=') || criteriaText.includes('≤')) {
+                        if (cgpaQuery > requiredCGPA) return false;
+                    } else if (criteriaText.includes('<')) {
+                        if (cgpaQuery >= requiredCGPA) return false;
+                    } else if (criteriaText.includes('=')) {
+                        if (Math.abs(cgpaQuery - requiredCGPA) > 0.01) return false;
+                    } else {
+                        // Default: minimum requirement
+                        if (cgpaQuery < requiredCGPA) return false;
+                    }
+                }
+            }
+            
+            return true;
+        });
+        
+        displayCompanies(filteredCompanies);
+        updateStatsWithFiltered();
+    }
+    
+    function resetFilters() {
+        document.getElementById("skillFilter").value = "";
+        document.getElementById("cgpaFilter").value = "";
+        
+        filteredCompanies = [...allCompanies];
+        displayCompanies(allCompanies);
+        updateStats();
+    }
+    
+    function showEmptyState() {
+        const container = document.getElementById("companiesContainer");
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="empty-title">No Companies Found</div>
+                <div class="empty-text">
+                    ${filteredCompanies.length === 0 && allCompanies.length > 0 ? 
+                        "No companies match your filters. Try adjusting your skill or CGPA criteria." : 
+                        "No placement companies are currently available. Check back soon for new opportunities!"}
+                </div>
+                <button class="btn-secondary" onclick="resetFilters()" style="margin-top: 24px;">
+                    <i class="fas fa-redo"></i> View All Companies
+                </button>
+            </div>
+        `;
+    }
+    
+    function updateStats() {
+        const total = allCompanies.length;
+        const open = allCompanies.filter(c => c.status === "Open").length;
+        
+        let totalCGPA = 0;
+        let cgpaCount = 0;
+        
+        allCompanies.forEach(company => {
+            if (company.criteria) {
+                const match = company.criteria.match(/(\d+(\.\d+)?)/);
+                if (match) {
+                    totalCGPA += parseFloat(match[0]);
+                    cgpaCount++;
+                }
+            }
+        });
+        
+        const avg = cgpaCount > 0 ? (totalCGPA / cgpaCount).toFixed(1) : "0.0";
+        
+        document.getElementById("totalCompanies").textContent = total;
+        document.getElementById("openCompanies").textContent = open;
+        document.getElementById("avgCGPA").textContent = avg;
+    }
+
+    async function refreshCompanies() {
+        const studentId = getStudentId();
+        await loadCompanies(studentId);
+        const skillQuery = document.getElementById("skillFilter").value.trim();
+        const cgpaQuery = document.getElementById("cgpaFilter").value.trim();
+        if (skillQuery || cgpaQuery) {
+            searchCompanies();
+        } else {
+            updateStats();
+        }
+    }
+
+    setInterval(refreshCompanies, 30000);
+    window.addEventListener('focus', refreshCompanies);
+    
+    function updateStatsWithFiltered() {
+        const total = filteredCompanies.length;
+        const open = filteredCompanies.filter(c => c.status === "Open").length;
+        
+        document.getElementById("totalCompanies").textContent = total;
+        document.getElementById("openCompanies").textContent = open;
+        // Keep avg CGPA from all companies for reference
+    }
+    
+    // Enter key support
+    document.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const activeElement = document.activeElement;
+            if (activeElement && (activeElement.id === 'skillFilter' || activeElement.id === 'cgpaFilter')) {
+                searchCompanies();
+            }
+        }
+    });
+</script>
+</body>
+</html>

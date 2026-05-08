@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNP Dashboard | Placement Management System</title>
+    <script src="api.js"></script>
+    <script>
+        (function() {
+            const adminToken = localStorage.getItem('tnp_admin_token');
+            if (!adminToken) {
+                window.location.replace('tnp_admin_login.html');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e3c72;
+            --primary-dark: #0f2b4f;
+            --secondary: #2a5298;
+            --accent: #00b4aa;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --shortlisted: #8e44ad;
+            --applied: #3498db;
+            --pending: #f39c12;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.5;
+            padding: 24px 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px 28px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .logout-btn {
+            background: var(--light);
+            border: 1px solid var(--border);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark);
+        }
+
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: white;
+            padding: 6px;
+            border-radius: 60px;
+            width: fit-content;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            padding: 12px 28px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--gray);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(30,60,114,0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .card-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            background: white;
+        }
+
+        .card-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .form-control, select.form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30,60,114,0.1);
+        }
+
+        /* Buttons */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-placed { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+        .status-rejected { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
+        .status-accepted { background: rgba(46, 204, 113, 0.1); color: #2ecc71; }
+        .status-applied { background: rgba(52, 152, 219, 0.1); color: #3498db; }
+        .status-shortlisted { background: rgba(142, 68, 173, 0.1); color: #8e44ad; }
+        .status-pending { background: rgba(243, 156, 18, 0.1); color: #f39c12; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #eef2f6;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: #e0f5e9;
+            color: var(--success);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: var(--success);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            border-radius: 20px;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 16px;
+            background: #f8fafc;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--gray);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fafcff;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-open { background: #d1fae5; color: #065f46; }
+        .status-closed { background: #fee2e2; color: #991b1b; }
+        .status-upcoming { background: #fef3c7; color: #92400e; }
+        .status-pending { background: #fed7aa; color: #9b4d0c; }
+        .status-accepted { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #ffe4e2; color: #b91c1c; }
+        .status-placed { background: #a7f3d0; color: #065f46; font-weight: 700; }
+
+        /* Stats */
+        .stats-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: var(--light);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--gray);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 90%;
+            padding: 24px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* Toast */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid var(--success);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .stats-grid { flex-direction: column; }
+            .tabs { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container">
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-briefcase"></i></div>
+            <div class="logo-text">
+                <h1>TNP Placement Management</h1>
+                <p>Drive schedule · Internship tracking · Placement results</p>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('companies')"><i class="fas fa-building"></i> Companies</button>
+            <button class="tab-btn" onclick="switchTab('applications')"><i class="fas fa-file-invoice"></i> Applications</button>
+            <button class="tab-btn" onclick="switchTab('students')"><i class="fas fa-user-graduate"></i> Students</button>
+        </div>
+
+    <!-- Companies Tab -->
+    <div id="companies-tab" class="tab-content active">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-plus-circle"></i> Register New Placement Drive</h3>
+            </div>
+            <div class="card-body">
+                <form id="companyForm">
+                    <div class="form-grid">
+                        <div class="form-group"><label>Company Name *</label><input type="text" id="company_name" class="form-control" placeholder="e.g., Microsoft" required></div>
+                        <div class="form-group"><label>Skills Required</label><input type="text" id="skills" class="form-control" placeholder="Java, Python, React"></div>
+                        <div class="form-group"><label>Branch / Department</label><input type="text" id="branchDepartment" class="form-control" placeholder="Computer, IT, E&TC"></div>
+                        <!-- <div class="form-group"><label>Year Eligible</label><input type="text" id="eligibleYear" class="form-control" placeholder="3rd year, final year"></div> -->
+                        <!-- <div class="form-group"><label>Course</label><input type="text" id="course" class="form-control" placeholder="B.E., B.Tech, MCA"></div> -->
+                        <div class="form-group"><label>Registration Link</label><input type="url" id="registrationLink" class="form-control" placeholder="https://example.com/register"></div>
+                        <div class="form-group"><label>Eligibility Criteria</label><input type="text" id="criteria" class="form-control" placeholder="CGPA ≥ 7.5, No backlogs"></div>
+                        <!-- <div class="form-group"><label>Minimum CGPA / %</label><input type="text" id="minimumCgpaPercentage" class="form-control" placeholder="e.g. 7.0 CGPA / 65%"></div> -->
+                        <div class="form-group"><label>Eligible Batches</label><input type="text" id="eligibleBatches" class="form-control" placeholder="2024, 2025, 2026"></div>
+                        <div class="form-group"><label>Degree</label><input type="text" id="degree" class="form-control" placeholder="B.Tech, M.Tech, MCA"></div>
+                        <div class="form-group"><label>Stipend</label><input type="text" id="stipend" class="form-control" placeholder="₹20,000 / month"></div>
+                        <div class="form-group"><label>Location</label><input type="text" id="location" class="form-control" placeholder="Bangalore / Remote / Hyderabad"></div>
+                        <div class="form-group"><label>Work Mode</label><select id="workMode" class="form-control"><option value="Hybrid">Hybrid</option><option value="Onsite">Onsite</option><option value="Remote">Remote</option></select></div>
+                        <div class="form-group"><label>Specification / Role</label><input type="text" id="specification" class="form-control" placeholder="SDE Intern, Analyst, Developer"></div>
+                        <div class="form-group"><label>Internship Type</label><select id="internshipType" class="form-control"><option value="Full-time">Full-time</option><option value="Part-time">Part-time</option></select></div>
+                        <div class="form-group"><label>Drive Schedule Date</label><input type="date" id="driveDate" class="form-control"></div>
+                        <div class="form-group"><label>Application Deadline</label><input type="date" id="deadline" class="form-control"></div>
+                        <div class="form-group"><label>Internship Period</label><input type="text" id="internPeriod" class="form-control" placeholder="6 months / 3 months"></div>
+                        <div class="form-group"><label>Internship Start Date</label><input type="date" id="internshipEndDate" class="form-control"></div>
+                        <div class="form-group"><label>Aptitude Test</label><select id="aptitudeTest" class="form-control"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                        <div class="form-group"><label>Technical Interview</label><select id="technicalInterview" class="form-control"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                        <div class="form-group"><label>HR Interview</label><select id="hrInterview" class="form-control"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                        <div class="form-group"><label>Assignment / Project Round</label><select id="assignmentProjectRound" class="form-control"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                        <!-- <div class="form-group"><label>Responsibilities</label><input type="text" id="responsibilities" class="form-control" placeholder="Role responsibilities"></div> -->
+                        <!-- <div class="form-group"><label>Preferred Skills</label><input type="text" id="preferredSkills" class="form-control" placeholder="Optional skills"></div> -->
+                        <div class="form-group"><label>Company Type</label><select id="companyCategory" class="form-control"><option value="Dream">Dream</option><option value="Medium">Medium</option><option value="Safe">Safe</option></select></div>
+                        <div class="form-group"><label>Placement Status</label><select id="status" class="form-control"><option value="Open">Open for Applications</option><option value="Closed">Closed</option></select></div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <button type="button" class="btn btn-primary" onclick="submitCompany()"><i class="fas fa-save"></i> Register Drive</button>
+                    </div>
+                </form>
+                <div id="msg"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-calendar-alt"></i> Active Placement Drives</h3>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="searchSkillCompany" class="form-control" placeholder="Search by skill" style="width: 180px;">
+                    <button class="btn btn-secondary" onclick="searchCompanies()"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-secondary" onclick="resetCompanySearch()"><i class="fas fa-redo"></i></button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>Company</th><th>Role/Spec</th><th>Location</th><th>Work Mode</th><th>Drive Date</th><th>Deadline</th><th>Intern Period</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                    <tbody id="companyBody"><tr><td colspan="9"><div class="empty-state"><i class="fas fa-spinner fa-pulse"></i> Loading...</div></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+        <!-- Students Tab -->
+        <div id="students-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-users"></i>
+                    <h2>Student Management</h2>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>PRN</th>
+                                <th>Student</th>
+                                <th>Company</th>
+                                <th>Duration</th>
+                                <th>Role</th>
+                                <th>Stipend</th>
+                                <th>Result</th>
+                                <th>Admin Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsList">
+                            <!-- Dynamic Students -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <div id="applications-tab" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-line"></i> Placement Statistics</h3>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-number" id="totalApps">0</div><div>Total Applications</div></div>
+                    <div class="stat-card"><div class="stat-number" id="pendingApps">0</div><div>Under Review</div></div>
+                    <div class="stat-card"><div class="stat-number" id="acceptedApps">0</div><div>Selected / Placed</div></div>
+                    <div class="stat-card"><div class="stat-number" id="rejectedApps">0</div><div>Not Selected</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-filter"></i> Filter Applications</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="filterStudent" class="form-control" placeholder="Student name" style="width: 160px;">
+                    <input type="text" id="filterCompanyApp" class="form-control" placeholder="Company" style="width: 160px;">
+                    <select id="filterStatus" class="form-control" style="width: 140px;"><option value="">All Status</option><option value="Pending">Pending</option><option value="Accepted">Selected</option><option value="Rejected">Rejected</option></select>
+                    <button class="btn btn-primary" onclick="filterApplications()"><i class="fas fa-filter"></i> Apply</button>
+                    <button class="btn btn-secondary" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Student</th><th>Company</th><th>Role</th><th>Status</th><th>Applied Date</th><th>Result Based Update</th><th>Actions</th></tr></thead>
+                    <tbody id="appTableBody"><tr><td colspan="7"><div class="empty-state"><i class="fas fa-spinner fa-pulse"></i> Loading applications...</div></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>Edit Drive Details</h3><button class="close-modal" onclick="closeEditModal()">&times;</button></div><div id="editFormContent"></div></div></div>
+
+<script>
+    const adminToken = localStorage.getItem("tnp_admin_token");
+    if (!adminToken) {
+        window.location.href = "tnp_admin_login.html";
+    }
+
+    let currentCompanies = [];
+    let applicationsData = [];
+    let filteredApplications = [];
+
+    function showMessage(text, isError = false) {
+        let existing = document.querySelector('.toast-msg');
+        if(existing) existing.remove();
+        const div = document.createElement('div');
+        div.className = 'toast-msg';
+        div.style.borderLeftColor = isError ? '#e74c3c' : '#2ecc71';
+        div.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${text}`;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    }
+
+    async function loadCompanies() {
+        try {
+            const companies = await getCompanies();
+            currentCompanies = companies;
+            renderCompanyTable(currentCompanies);
+        } catch(e) { console.error(e); document.getElementById("companyBody").innerHTML = `<tr><td colspan="9"><div class="empty-state">Error loading</div></td></tr>`; }
+    }
+
+    function renderCompanyTable(companies) {
+        const tbody = document.getElementById("companyBody");
+        if(!companies.length) { tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><i class="fas fa-building"></i> No drives registered</div></td></tr>`; return; }
+        tbody.innerHTML = "";
+        companies.forEach(c => {
+            const statusClass = c.status === 'Open' ? 'status-open' : 'status-closed';
+            const driveDate = c.driveDate || 'TBD';
+            const deadline = c.deadline || 'TBD';
+            tbody.innerHTML += `<tr>
+                <td><strong>${escapeHtml(c.companyName)}</strong></td>
+                <td>${escapeHtml(c.specification || c.skills?.split(',')[0] || 'General')}</td>
+                <td>${escapeHtml(c.location || 'Not specified')}</td>
+                <td><span class="status-badge" style="background:#e9ecef;">${escapeHtml(c.workMode || 'Hybrid')}</span></td>
+                <td>${escapeHtml(driveDate)}</td>
+                <td>${escapeHtml(deadline)}</td>
+                <td>${escapeHtml(c.internPeriod || 'N/A')}</td>
+                <td><span class="status-badge ${statusClass}">${c.status}</span></td>
+                <td><div class="action-buttons"><button class="btn btn-secondary action-btn" onclick="editCompany(${c.id})"><i class="fas fa-edit"></i> Edit</button>
+                <button class="btn btn-danger action-btn" onclick="deleteCompany(${c.id})"><i class="fas fa-trash"></i> Del</button>
+                <button class="btn btn-info action-btn" onclick="viewApplicationsByCompany('${c.companyName}')"><i class="fas fa-eye"></i> Apps</button></div></td>
+            </tr>`;
+        });
+    }
+
+    async function submitCompany() {
+        const company = {
+            companyName: document.getElementById('company_name').value.trim(),
+            skills: document.getElementById('skills').value.trim(),
+            requiredSkills: document.getElementById('skills').value.trim(),
+            branchDepartment: document.getElementById('branchDepartment').value.trim(),
+            eligibleYear: document.getElementById('eligibleYear').value.trim(),
+            course: document.getElementById('course').value.trim(),
+            registrationLink: document.getElementById('registrationLink').value.trim(),
+            criteria: document.getElementById('criteria').value.trim(),
+            minimumCgpaPercentage: document.getElementById('minimumCgpaPercentage').value.trim(),
+            eligibleBatches: document.getElementById('eligibleBatches').value.trim(),
+            degree: document.getElementById('degree').value.trim(),
+            stipend: document.getElementById('stipend').value.trim(),
+            location: document.getElementById('location').value.trim(),
+            workMode: document.getElementById('workMode').value,
+            specification: document.getElementById('specification').value.trim(),
+            internshipTitleRole: document.getElementById('specification').value.trim(),
+            internshipType: document.getElementById('internshipType').value,
+            driveDate: document.getElementById('driveDate').value,
+            internshipStartDate: document.getElementById('driveDate').value,
+            deadline: document.getElementById('deadline').value,
+            registrationDeadline: document.getElementById('deadline').value,
+            internPeriod: document.getElementById('internPeriod').value.trim(),
+            duration: document.getElementById('internPeriod').value.trim(),
+            internshipEndDate: document.getElementById('internshipEndDate').value,
+            aptitudeTest: document.getElementById('aptitudeTest').value,
+            technicalInterview: document.getElementById('technicalInterview').value,
+            hrInterview: document.getElementById('hrInterview').value,
+            assignmentProjectRound: document.getElementById('assignmentProjectRound').value,
+            responsibilities: document.getElementById('responsibilities').value.trim(),
+            preferredSkills: document.getElementById('preferredSkills').value.trim(),
+            companyCategory: document.getElementById('companyCategory').value,
+            dreamCompany: document.getElementById('companyCategory').value.toLowerCase() === 'dream',
+            status: document.getElementById('status').value
+        };
+        if(!company.companyName) { showMessage("Company name required", true); return; }
+        
+        try {
+            const r = await addPlacementDrive(company);
+            if(r.ok) {
+                showMessage("Drive registered successfully"); 
+                document.getElementById("companyForm").reset(); 
+                loadCompanies();
+            } else {
+                showMessage(r.error || "Failed to register drive", true);
+            }
+        } catch(e) { showMessage("Network error: " + e.message, true); }
+    }
+
+    async function deleteCompany(id) { 
+        if(!confirm("Delete this placement drive?")) return; 
+        const r = await deletePlacementDrive(id);
+        if (r.ok) {
+            showMessage("Drive deleted"); 
+            loadCompanies(); 
+        } else {
+            showMessage(r.error || "Delete failed", true);
+        }
+    }
+
+    function searchCompanies() {
+        const skill = document.getElementById("searchSkillCompany").value.toLowerCase();
+        const filtered = currentCompanies.filter(c => (c.skills || "").toLowerCase().includes(skill));
+        renderCompanyTable(filtered);
+    }
+    function resetCompanySearch() { document.getElementById("searchSkillCompany").value = ""; renderCompanyTable(currentCompanies); }
+
+    function editCompany(id) {
+        const company = currentCompanies.find(c => c.id === id);
+        if(!company) return;
+        document.getElementById('editFormContent').innerHTML = `
+            <div class="form-grid">
+                <div class="form-group"><label>Company</label><input id="editName" class="form-control" value="${escapeHtml(company.companyName)}"></div>
+                <div class="form-group"><label>Skills</label><input id="editSkills" class="form-control" value="${escapeHtml(company.skills)}"></div>
+                <div class="form-group"><label>Registration Link</label><input id="editRegistrationLink" class="form-control" value="${escapeHtml(company.registrationLink || '')}"></div>
+                <div class="form-group"><label>Criteria</label><input id="editCriteria" class="form-control" value="${escapeHtml(company.criteria)}"></div>
+                <div class="form-group"><label>Eligible Batches</label><input id="editEligibleBatches" class="form-control" value="${escapeHtml(company.eligibleBatches || '')}"></div>
+                <div class="form-group"><label>Degree</label><input id="editDegree" class="form-control" value="${escapeHtml(company.degree || '')}"></div>
+                <div class="form-group"><label>Stipend</label><input id="editStipend" class="form-control" value="${escapeHtml(company.stipend || '')}"></div>
+                <div class="form-group"><label>Location</label><input id="editLocation" class="form-control" value="${escapeHtml(company.location || '')}"></div>
+                <div class="form-group"><label>Work Mode</label><select id="editWorkMode" class="form-control"><option ${company.workMode==='Hybrid'?'selected':''}>Hybrid</option><option ${company.workMode==='Onsite'?'selected':''}>Onsite</option><option ${company.workMode==='Remote'?'selected':''}>Remote</option></select></div>
+                <div class="form-group"><label>Specification</label><input id="editSpec" class="form-control" value="${escapeHtml(company.specification || '')}"></div>
+                <div class="form-group"><label>Drive Date</label><input type="date" id="editDriveDate" class="form-control" value="${company.driveDate || ''}"></div>
+                <div class="form-group"><label>Deadline</label><input type="date" id="editDeadline" class="form-control" value="${company.deadline || ''}"></div>
+                <div class="form-group"><label>Intern Period</label><input id="editInternPeriod" class="form-control" value="${escapeHtml(company.internPeriod || '')}"></div>
+                <div class="form-group"><label>Status</label><select id="editStatus" class="form-control"><option ${company.status==='Open'?'selected':''}>Open</option><option ${company.status==='Closed'?'selected':''}>Closed</option></select></div>
+            </div>
+            <div style="margin-top:20px; display:flex; gap:12px; justify-content:flex-end;"><button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button><button class="btn btn-primary" onclick="saveEdit(${id})">Save</button></div>`;
+        document.getElementById('editModal').style.display = 'flex';
+    }
+    function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+    async function saveEdit(id) {
+        const updated = {
+            companyName: document.getElementById('editName').value.trim(),
+            skills: document.getElementById('editSkills').value.trim(),
+            registrationLink: document.getElementById('editRegistrationLink').value.trim(),
+            criteria: document.getElementById('editCriteria').value.trim(),
+            eligibleBatches: document.getElementById('editEligibleBatches').value.trim(),
+            degree: document.getElementById('editDegree').value.trim(),
+            stipend: document.getElementById('editStipend').value.trim(),
+            location: document.getElementById('editLocation').value.trim(),
+            workMode: document.getElementById('editWorkMode').value,
+            specification: document.getElementById('editSpec').value.trim(),
+            driveDate: document.getElementById('editDriveDate').value,
+            deadline: document.getElementById('editDeadline').value,
+            internPeriod: document.getElementById('editInternPeriod').value.trim(),
+            status: document.getElementById('editStatus').value
+        };
+        const r = await updatePlacementDrive(id, updated);
+        if(r.ok) { 
+            closeEditModal(); 
+            loadCompanies(); 
+            showMessage("Drive updated"); 
+        } else {
+            showMessage(r.error || "Update failed", true);
+        }
+    }
+
+    async function loadApplications() {
+        try {
+            const r = await apiFetch("/tnp/applications");
+            if (r.ok) {
+                applicationsData = r.data;
+                filteredApplications = [...applicationsData];
+                renderApplications();
+                updateStats();
+            } else {
+                throw new Error(r.error);
+            }
+        } catch(e) { document.getElementById("appTableBody").innerHTML = `<tr><td colspan="7"><div class="empty-state">Error loading</div></td></tr>`; }
+    }
+
+    function renderApplications() {
+        const tbody = document.getElementById("appTableBody");
+        if(!filteredApplications.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">No applications</div></td></tr>`; return; }
+        tbody.innerHTML = "";
+        filteredApplications.forEach(app => {
+            const studentName = app.student?.name || app.studentName || "Student";
+            const companyName = app.company?.companyName || app.companyName || "Unknown";
+            const appId = app.id;
+            const role = "General"; // Default or from data if available
+            const status = app.status || "APPLIED";
+            const resultStatus = app.resultStatus || "Pending";
+            const appliedDate = app.appliedDate || "N/A";
+
+            const isPlaced = resultStatus === "Selected" || resultStatus === "Placed";
+            const isShortlisted = resultStatus === "Shortlisted";
+            const isRejected = resultStatus === "Rejected";
+
+            tbody.innerHTML += `
+            <tr>
+                <td><strong>${escapeHtml(studentName)}</strong></td>
+                <td>${escapeHtml(companyName)}</td>
+                <td><span class="status-badge ${status === 'APPLIED' ? 'status-applied' : 'status-rejected'}">${escapeHtml(status)}</span></td>
+                <td>${escapeHtml(appliedDate)}</td>
+                <td><span class="status-badge ${isPlaced ? 'status-placed' : (isShortlisted ? 'status-shortlisted' : (isRejected ? 'status-rejected' : 'status-pending'))}">${escapeHtml(resultStatus)}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        ${resultStatus === "Pending" ? `
+                            <button class="btn btn-info btn-sm action-btn" onclick="updatePlacementStatus('${appId}', 'Shortlisted', '${escapeHtml(studentName)}')"><i class="fas fa-list-ul"></i> Shortlist</button>
+                            <button class="btn btn-warning btn-sm action-btn" onclick="updatePlacementStatus('${appId}', 'Selected', '${escapeHtml(studentName)}')"><i class="fas fa-user-check"></i> Select</button>
+                            <button class="btn btn-danger btn-sm action-btn" onclick="updatePlacementStatus('${appId}', 'Rejected', '${escapeHtml(studentName)}')"><i class="fas fa-times"></i> Reject</button>
+                        ` : 
+                        (isShortlisted ? `
+                            <button class="btn btn-warning btn-sm action-btn" onclick="updatePlacementStatus('${appId}', 'Selected', '${escapeHtml(studentName)}')"><i class="fas fa-user-check"></i> Select</button>
+                            <button class="btn btn-danger btn-sm action-btn" onclick="updatePlacementStatus('${appId}', 'Rejected', '${escapeHtml(studentName)}')"><i class="fas fa-times"></i> Reject</button>
+                        ` :
+                        (isPlaced ? `<span class="status-badge status-placed"><i class="fas fa-medal"></i> PLACED</span>` : `<span class="status-badge status-rejected">Rejected</span>`))}
+                        <button class="btn btn-info btn-sm action-btn" onclick="viewDetails('${appId}')"><i class="fas fa-info-circle"></i> Details</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+        });
+    }
+
+    async function updatePlacementStatus(appId, newStatus, studentName) {
+        let confirmMsg = `Update status of ${studentName} to ${newStatus}?`;
+        if(!confirm(confirmMsg)) return;
+        try {
+            let endpoint = "";
+            if(newStatus === "Accepted") endpoint = `/tnp/applications/${appId}/accept`;
+            else if(newStatus === "Rejected") endpoint = `/tnp/applications/${appId}/reject`;
+            else if(newStatus === "Placed") endpoint = `/tnp/applications/${appId}/placed`;
+            else if(newStatus === "Shortlisted") endpoint = `/tnp/applications/${appId}/shortlist`;
+            else if(newStatus === "Selected") endpoint = `/tnp/applications/${appId}/select`;
+            
+            const r = await apiFetch(endpoint, { method: "PUT" });
+            if(r.ok) {
+                showMessage(`${studentName} → ${newStatus}`);
+                await loadApplications();
+            } else {
+                showMessage(r.error || "Update failed", true);
+            }
+        } catch(e) { showMessage("Update failed", true); }
+    }
+
+    let placementsData = [];
+    async function loadStudents() {
+        const r = await apiFetch("/tnp/placements");
+        if(r.ok) {
+            placementsData = r.data;
+            renderStudents();
+        }
+    }
+
+    function renderStudents() {
+        const tbody = document.getElementById('studentsList');
+        tbody.innerHTML = "";
+        placementsData.forEach(p => {
+            const isBlocked = p.isBlocked;
+            tbody.innerHTML += `<tr>
+                <td>${escapeHtml(p.prn)}</td>
+                <td><strong>${escapeHtml(p.studentName)}</strong></td>
+                <td>${escapeHtml(p.companyName)}</td>
+                <td>${escapeHtml(p.duration || 'N/A')}</td>
+                <td>${escapeHtml(p.role || 'N/A')}</td>
+                <td>${escapeHtml(p.stipend || 'N/A')}</td>
+                <td><span class="status-badge status-placed">${escapeHtml(p.resultStatus)}</span></td>
+                <td><span class="status-badge ${isBlocked ? 'status-rejected' : 'status-accepted'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-info btn-sm" onclick="viewStudentDetails('${p.studentId}')"><i class="fas fa-user"></i> Profile</button>
+                        ${isBlocked ? 
+                            `<button class="btn btn-success btn-sm" onclick="toggleBlock('${p.studentId}', false)"><i class="fas fa-unlock"></i> Unblock</button>` :
+                            `<button class="btn btn-danger btn-sm" onclick="toggleBlock('${p.studentId}', true)"><i class="fas fa-ban"></i> Block</button>`
+                        }
+                    </div>
+                </td>
+            </tr>`;
+        });
+    }
+
+    async function toggleBlock(studentId, block) {
+        const reason = block ? prompt("Reason for blocking (e.g. Internship Secured):") : "";
+        if (block && reason === null) return;
+        
+        const endpoint = `/tnp/students/${studentId}/${block ? 'block' : 'unblock'}`;
+        const r = await apiFetch(endpoint, { 
+            method: "POST",
+            body: block ? { reason } : {}
+        });
+        
+        if (r.ok) {
+            showMessage(block ? "Student Blocked" : "Student Unblocked");
+            loadStudents();
+        } else {
+            showMessage(r.error || "Operation failed", true);
+        }
+    }
+
+    function viewStudentDetails(studentId) {
+        // We might need to fetch full student info if not in placementsData
+        // For now, let's just show a message or fetch it
+        apiFetch(`/tnp/students`).then(r => {
+            if(r.ok) {
+                const s = r.data.find(st => st.id == studentId);
+                if(s) viewDetailsForStudent(s);
+            }
+        });
+    }
+
+    function viewDetailsForStudent(s) {
+        // Reuse the logic from viewDetails
+        const details = `
+            <div class="student-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-user"></i> Personal Details</h4>
+                    <p><strong>Full Name:</strong> ${escapeHtml(s.name || 'N/A')}</p>
+                    <p><strong>PRN:</strong> ${escapeHtml(s.prn || 'N/A')}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(s.email || 'N/A')}</p>
+                    <p><strong>Phone:</strong> ${escapeHtml(s.phone || 'N/A')}</p>
+                    <p><strong>Gender:</strong> ${escapeHtml(s.gender || 'N/A')}</p>
+                    <p><strong>DOB:</strong> ${escapeHtml(s.dob || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-graduation-cap"></i> Academic Info</h4>
+                    <p><strong>Branch:</strong> ${escapeHtml(s.branch || 'N/A')}</p>
+                    <p><strong>Current Year:</strong> ${escapeHtml(s.year || 'N/A')}</p>
+                    <p><strong>CGPA:</strong> <span style="color: #2ecc71; font-weight: bold;">${s.cgpa || 'N/A'}</span></p>
+                    <p><strong>10th %:</strong> ${s.tenthPercentage || 'N/A'}%</p>
+                    <p><strong>12th/Dip %:</strong> ${s.twelfthOrDiplomaPercentage || 'N/A'}%</p>
+                    <p><strong>College:</strong> ${escapeHtml(s.collegeName || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-code"></i> Professional Links</h4>
+                    <p><strong>Skills:</strong> ${escapeHtml(s.skills || 'N/A')}</p>
+                    <p><strong>LinkedIn:</strong> ${s.linkedin ? `<a href="${s.linkedin}" target="_blank">${escapeHtml(s.linkedin)}</a>` : 'N/A'}</p>
+                    <p><strong>GitHub:</strong> ${s.github ? `<a href="${s.github}" target="_blank">${escapeHtml(s.github)}</a>` : 'N/A'}</p>
+                    <p><strong>LeetCode:</strong> ${s.leetcodeLink ? `<a href="${s.leetcodeLink}" target="_blank">Profile</a>` : 'N/A'}</p>
+                    <p><strong>Achievements:</strong> ${escapeHtml(s.achievements || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-file-pdf"></i> Documents</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${s.resumePath ? `<a href="${s.resumePath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-file-pdf"></i> View Resume</a>` : '<span style="color: #999;">No Resume Uploaded</span>'}
+                        ${s.photoPath ? `<a href="${s.photoPath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-image"></i> View Photo</a>` : '<span style="color: #999;">No Photo Uploaded</span>'}
+                        ${s.certificatePath ? `<a href="${s.certificatePath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-certificate"></i> View Certificate</a>` : '<span style="color: #999;">No Certificate Uploaded</span>'}
+                    </div>
+                </div>
+            </div>
+        `;
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal';
+        modalDiv.style.display = 'flex';
+        modalDiv.innerHTML = `<div class="modal-content" style="max-width: 800px; width: 90%;"><div class="modal-header"><h3>Student Full Profile</h3><button onclick="this.closest('.modal').remove()" style="background:none;border:none;font-size:24px;">&times;</button></div><div class="modal-body" style="padding:20px;">${details}</div></div>`;
+        document.body.appendChild(modalDiv);
+    }
+
+    function filterApplications() {
+        const student = document.getElementById('filterStudent').value.toLowerCase();
+        const company = document.getElementById('filterCompanyApp').value.toLowerCase();
+        const status = document.getElementById('filterStatus').value;
+        filteredApplications = applicationsData.filter(app => {
+            const s = (app.student?.name || app.studentName || "").toLowerCase();
+            const c = (app.company?.companyName || app.companyName || "").toLowerCase();
+            const stat = app.status || "Pending";
+            return s.includes(student) && c.includes(company) && (status === "" || stat === status);
+        });
+        renderApplications();
+        updateStats();
+    }
+    function clearFilters() { document.getElementById('filterStudent').value = ""; document.getElementById('filterCompanyApp').value = ""; document.getElementById('filterStatus').value = ""; filteredApplications = [...applicationsData]; renderApplications(); updateStats(); }
+    function updateStats() { const total=applicationsData.length, pending=applicationsData.filter(a=>(a.status||"Pending")==="Pending").length, accepted=applicationsData.filter(a=>a.status==="Accepted"||a.status==="Placed").length, rejected=applicationsData.filter(a=>a.status==="Rejected").length;
+        document.getElementById('totalApps').textContent=total; document.getElementById('pendingApps').textContent=pending; document.getElementById('acceptedApps').textContent=accepted; document.getElementById('rejectedApps').textContent=rejected; }
+    function viewApplicationsByCompany(cname) { switchTab('applications'); document.getElementById('filterCompanyApp').value = cname; filterApplications(); }
+    function viewDetails(appId) {
+        const app = applicationsData.find(a => a.id == appId);
+        if (!app) return;
+        const s = app.student || {};
+        
+        const details = `
+            <div class="student-details-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-user"></i> Personal Details</h4>
+                    <p><strong>Full Name:</strong> ${escapeHtml(s.name || 'N/A')}</p>
+                    <p><strong>PRN:</strong> ${escapeHtml(s.prn || 'N/A')}</p>
+                    <p><strong>Email:</strong> ${escapeHtml(s.email || 'N/A')}</p>
+                    <p><strong>Phone:</strong> ${escapeHtml(s.phone || 'N/A')}</p>
+                    <p><strong>Gender:</strong> ${escapeHtml(s.gender || 'N/A')}</p>
+                    <p><strong>DOB:</strong> ${escapeHtml(s.dob || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-graduation-cap"></i> Academic Info</h4>
+                    <p><strong>Branch:</strong> ${escapeHtml(s.branch || 'N/A')}</p>
+                    <p><strong>Current Year:</strong> ${escapeHtml(s.year || 'N/A')}</p>
+                    <p><strong>CGPA:</strong> <span style="color: #2ecc71; font-weight: bold;">${s.cgpa || 'N/A'}</span></p>
+                    <p><strong>10th %:</strong> ${s.tenthPercentage || 'N/A'}%</p>
+                    <p><strong>12th/Dip %:</strong> ${s.twelfthOrDiplomaPercentage || 'N/A'}%</p>
+                    <p><strong>College:</strong> ${escapeHtml(s.collegeName || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-code"></i> Professional Links</h4>
+                    <p><strong>Skills:</strong> ${escapeHtml(s.skills || 'N/A')}</p>
+                    <p><strong>LinkedIn:</strong> ${s.linkedin ? `<a href="${s.linkedin}" target="_blank">${escapeHtml(s.linkedin)}</a>` : 'N/A'}</p>
+                    <p><strong>GitHub:</strong> ${s.github ? `<a href="${s.github}" target="_blank">${escapeHtml(s.github)}</a>` : 'N/A'}</p>
+                    <p><strong>LeetCode:</strong> ${s.leetcodeLink ? `<a href="${s.leetcodeLink}" target="_blank">Profile</a>` : 'N/A'}</p>
+                    <p><strong>Achievements:</strong> ${escapeHtml(s.achievements || 'N/A')}</p>
+                </div>
+                <div class="detail-section">
+                    <h4 style="border-bottom: 2px solid #4361ee; padding-bottom: 5px; margin-bottom: 10px; color: #4361ee;"><i class="fas fa-file-pdf"></i> Documents</h4>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        ${s.resumePath ? `<a href="${s.resumePath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-file-pdf"></i> View Resume</a>` : '<span style="color: #999;">No Resume Uploaded</span>'}
+                        ${s.photoPath ? `<a href="${s.photoPath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-image"></i> View Photo</a>` : '<span style="color: #999;">No Photo Uploaded</span>'}
+                        ${s.certificatePath ? `<a href="${s.certificatePath}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration: none; display: inline-block;"><i class="fas fa-certificate"></i> View Certificate</a>` : '<span style="color: #999;">No Certificate Uploaded</span>'}
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+                <p><strong>Applied For:</strong> ${escapeHtml(app.company?.companyName || app.companyName)} (${escapeHtml(app.company?.specification || 'General')})</p>
+                <p><strong>Applied Date:</strong> ${app.appliedDate}</p>
+            </div>
+        `;
+        
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal';
+        modalDiv.style.display = 'flex';
+        modalDiv.innerHTML = `
+            <div class="modal-content" style="max-width: 800px; width: 90%;">
+                <div class="modal-header">
+                    <h3>Student Application Detail</h3>
+                    <button onclick="this.closest('.modal').remove()" style="background:none;border:none;font-size:24px;cursor:pointer;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 20px; max-height: 70vh; overflow-y: auto;">
+                    ${details}
+                </div>
+                <div class="modal-footer" style="padding: 15px; border-top: 1px solid #ddd; text-align: right;">
+                    <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Close</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        modalDiv.addEventListener('click', (e) => { if (e.target === modalDiv) modalDiv.remove(); });
+    }
+    function switchTab(tab) { 
+        document.querySelectorAll('.tab-btn').forEach(btn=>btn.classList.remove('active')); 
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active')); 
+        if(tab==='companies'){ 
+            document.querySelector('.tab-btn:nth-child(1)').classList.add('active'); 
+            document.getElementById('companies-tab').classList.add('active'); 
+        } else if(tab==='applications'){ 
+            document.querySelector('.tab-btn:nth-child(2)').classList.add('active'); 
+            document.getElementById('applications-tab').classList.add('active'); 
+        } else if(tab==='students'){
+            document.querySelector('.tab-btn:nth-child(3)').classList.add('active'); 
+            document.getElementById('students-tab').classList.add('active');
+            loadStudents();
+        }
+    }
+    function logout() { localStorage.clear(); document.cookie = 'tnp_admin_token=; Max-Age=0; path=/'; alert("Logged out"); window.location.href="HomePage.html"; }
+    function escapeHtml(str) { if(!str) return ''; return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    document.addEventListener("DOMContentLoaded", () => { loadCompanies(); loadApplications(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TNP Admin Portal | Secure Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 40%, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: moveGrid 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(40px); }
+        }
+
+        .login-container {
+            display: flex;
+            width: 1100px;
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255,255,255,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(0px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container:hover {
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Left Panel - Brand Section */
+        .login-left {
+            flex: 1.1;
+            background: linear-gradient(145deg, #1e2a5e, #16213e);
+            padding: 48px 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255,215,0,0.15), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -15%;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(67,97,238,0.2), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .brand-icon {
+            font-size: 56px;
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.15);
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            backdrop-filter: blur(4px);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .welcome-text h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #fff, #cbd5ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome-text p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            opacity: 0.85;
+            margin-bottom: 28px;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .features li {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(2px);
+        }
+
+        .features i {
+            width: 28px;
+            height: 28px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        /* Stats Badge */
+        .live-stats {
+            margin-top: 32px;
+            display: flex;
+            gap: 20px;
+            background: rgba(255,255,255,0.08);
+            padding: 16px 20px;
+            border-radius: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
+        }
+
+        /* Right Panel - Login Form */
+        .login-right {
+            flex: 1;
+            padding: 48px 44px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: left;
+            margin-bottom: 36px;
+        }
+
+        .login-header h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #0a1927;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #5b6e8c;
+            font-size: 0.9rem;
+            font-weight: 450;
+        }
+
+        .login-box {
+            width: 100%;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa9c1;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 18px 16px 52px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            background: #fefefe;
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+            background: white;
+        }
+
+        .input-group input:focus + i {
+            color: #4361ee;
+        }
+
+        /* Password toggle */
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9aa9c1;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s;
+            z-index: 2;
+        }
+
+        .toggle-password:hover {
+            color: #4361ee;
+        }
+
+        /* Login button */
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(105deg, #2c3e8f, #1a2a6c);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 8px 20px rgba(44, 62, 143, 0.3);
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(44, 62, 143, 0.4);
+            background: linear-gradient(105deg, #1f3177, #121d4e);
+        }
+
+        .login-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Loading state */
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .login-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error message */
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px 16px;
+            border-radius: 40px;
+            background: rgba(231, 76, 60, 0.08);
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            backdrop-filter: blur(4px);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Success toast style */
+        .toast-success {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e4620;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Footer links */
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .footer p {
+            color: #6c7a91;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #4361ee;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: #1a2a6c;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 880px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            .login-left {
+                padding: 32px 28px;
+                text-align: center;
+            }
+            .brand-icon {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .features li {
+                justify-content: center;
+            }
+            .live-stats {
+                justify-content: center;
+            }
+            .login-right {
+                padding: 36px 28px;
+            }
+            .login-header {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-left, .login-right {
+                padding: 28px 20px;
+            }
+            .welcome-text h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* accessibility focus */
+        input:focus-visible {
+            outline: 2px solid #4361ee;
+            outline-offset: 2px;
+        }
+
+        button:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Left side: Branding & Highlights -->
+    <div class="login-left">
+        <div class="brand-icon">
+            <i class="fas fa-chalkboard-user"></i>
+        </div>
+        <div class="welcome-text">
+            <h1>Training & Placement<br>Admin Suite</h1>
+            <p>Centralized command center for managing campus recruitment, company partnerships, and student career outcomes.</p>
+        </div>
+        <ul class="features">
+            <li><i class="fas fa-briefcase"></i> <span>Manage placement drives & companies</span></li>
+            <li><i class="fas fa-users"></i> <span>Track student applications in real-time</span></li>
+            <li><i class="fas fa-chart-line"></i> <span>Analytics & placement reports</span></li>
+            <li><i class="fas fa-calendar-check"></i> <span>Schedule interviews & deadlines</span></li>
+        </ul>
+        <div class="live-stats">
+            <div class="stat-item">
+                <span class="stat-number" id="liveCompanies">24+</span>
+                <span class="stat-label">Active Recruiters</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="liveOffers">180+</span>
+                <span class="stat-label">Offers Made</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="liveStudents">650+</span>
+                <span class="stat-label">Students Placed</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right side: Login Form -->
+    <div class="login-right">
+        <div class="login-header">
+            <h2>Admin access</h2>
+            <p>Sign in with your institutional credentials</p>
+        </div>
+
+        <div class="login-box" autocomplete="off">
+            <input type="text" name="fakeusernameremembered" autocomplete="off" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" aria-hidden="true">
+            <input type="password" name="fakepasswordremembered" autocomplete="off" style="position:absolute;left:-9999px;top:-9999px;" tabindex="-1" aria-hidden="true">
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="text" id="username" name="adminUsername" placeholder="Admin username / email" autocomplete="off" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="adminPassword" placeholder="Password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Show password">
+                    <i class="fas fa-eye-slash"></i>
+                </button>
+            </div>
+
+            <button class="login-btn" id="loginBtn" onclick="loginAdmin()">
+                <i class="fas fa-arrow-right-to-bracket"></i> Sign in to Dashboard
+            </button>
+
+            <div id="googleAdminSignInButton" class="google-signin-container"></div>
+
+            <div id="error-msg" class="error" style="display: none;"></div>
+        </div>
+
+        <div class="footer">
+            <p><i class="fas fa-shield-alt"></i> Secure access · TNP Admin Cell only</p>
+            <p>Need assistance? <a href="#" id="supportLink"><i class="fas fa-headset"></i> Contact Support</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+    function getApiBaseUrl() {
+        const { protocol, hostname, port, origin } = window.location;
+        const localHost = hostname === "localhost" || hostname === "127.0.0.1";
+        const servedByBackend = localHost && port === "9090";
+        if (servedByBackend) return origin;
+        if (protocol === "file:") return "http://localhost:9090";
+        if (localHost) return "http://localhost:9090";
+        return origin;
+    }
+
+    const API_BASE_URL = getApiBaseUrl();
+
+    // DOM Elements
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const errorMsgDiv = document.getElementById('error-msg');
+    const toggleBtn = document.getElementById('togglePasswordBtn');
+
+    // Toggle password visibility
+    toggleBtn.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        const icon = toggleBtn.querySelector('i');
+        if (type === 'text') {
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    });
+
+    // Helper: show error message with animation
+    function showError(message) {
+        errorMsgDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+        errorMsgDiv.style.display = 'flex';
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            if (errorMsgDiv) errorMsgDiv.style.display = 'none';
+        }, 4000);
+    }
+
+    function clearError() {
+        errorMsgDiv.style.display = 'none';
+        errorMsgDiv.innerHTML = '';
+    }
+
+    // Show loading state on button
+    function setLoading(isLoading) {
+        if (isLoading) {
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Authenticating...';
+        } else {
+            loginBtn.classList.remove('loading');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign in to Dashboard';
+        }
+    }
+
+    // Display a temporary success-like message (for support / demo)
+    function showFloatingMessage(message, isError = false) {
+        const existingToast = document.querySelector('.toast-success');
+        if(existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-success';
+        toast.style.backgroundColor = isError ? '#c0392b' : '#1e4620';
+        toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-info'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
+
+    function validateCollegeEmail(email) {
+        return /^[a-zA-Z0-9._%+-]+@pccoer\.in$/.test(email.trim());
+    }
+
+    // Enhanced login function
+    async function loginAdmin() {
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        
+        // Reset error
+        clearError();
+
+        // Input validation with UX hints
+        if (!username) {
+            showError('Please enter your admin username or email address');
+            usernameInput.focus();
+            usernameInput.style.borderColor = '#e74c3c';
+            setTimeout(() => usernameInput.style.borderColor = '', 1500);
+            return;
+        }
+        if (username.includes('@') && !validateCollegeEmail(username)) {
+            showError('Please use your official college email address ending with @pccoer.in');
+            usernameInput.focus();
+            usernameInput.style.borderColor = '#e74c3c';
+            setTimeout(() => usernameInput.style.borderColor = '', 1500);
+            return;
+        }
+        if (!password) {
+            showError('Password cannot be empty');
+            passwordInput.focus();
+            passwordInput.style.borderColor = '#e74c3c';
+            setTimeout(() => passwordInput.style.borderColor = '', 1500);
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            // Handle non-OK HTTP responses
+            if (!response.ok) {
+                let errorText = "Authentication failed. Please check your credentials.";
+                if (response.status === 401) errorText = "Invalid username or password. Access denied.";
+                else if (response.status === 403) errorText = "Account restricted. Contact TNP admin.";
+                else if (response.status === 500) errorText = "Server error. Try again later.";
+                throw new Error(errorText);
+            }
+
+            const data = await response.json();
+            
+            if (data.status === "success") {
+                // Success: store session info optionally
+                if (data.token) {
+                    localStorage.setItem("tnp_admin_token", data.token);
+                    document.cookie = `tnp_admin_token=${data.token};path=/`;
+                }
+                if (data.adminName) localStorage.setItem("admin_name", data.adminName);
+                
+                // Animated feedback before redirect
+                showFloatingMessage("Login successful! Redirecting to dashboard...", false);
+                setTimeout(() => {
+                    window.location.href = "tnp_dashboard.html";
+                }, 600);
+            } else {
+                // Fallback for any other status
+                showError(data.message || "Invalid username or password. Please try again.");
+                setLoading(false);
+                // Shake animation effect
+                const loginBox = document.querySelector('.login-box');
+                loginBox.style.animation = 'shake 0.4s ease';
+                setTimeout(() => { loginBox.style.animation = ''; }, 500);
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            let friendlyMsg = err.message || "Unable to connect to server. Please check your network and try again.";
+            showError(friendlyMsg);
+            setLoading(false);
+            // Highlight input fields for retry
+            usernameInput.style.borderColor = '#e74c3c';
+            passwordInput.style.borderColor = '#e74c3c';
+            setTimeout(() => {
+                usernameInput.style.borderColor = '';
+                passwordInput.style.borderColor = '';
+            }, 2000);
+        }
+    }
+
+    // Support link handler - elegant & professional
+    const supportLink = document.getElementById('supportLink');
+    if (supportLink) {
+        supportLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showFloatingMessage("📧 TNP Support: tnp-admin@college.edu | Contact your placement officer for credentials.", false);
+        });
+    }
+
+    function handleGoogleCredentialResponse(response) {
+        if (!response.credential) {
+            showError('Google sign-in failed. Please try again.');
+            return;
+        }
+
+        setLoading(true);
+        fetch(`${API_BASE_URL}/api/admin/google-login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken: response.credential })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success' && data.token) {
+                localStorage.setItem('tnp_admin_token', data.token);
+                document.cookie = `tnp_admin_token=${data.token};path=/`;
+                if (data.admin?.username) localStorage.setItem('admin_name', data.admin.username);
+                showFloatingMessage('Google login successful! Redirecting to dashboard...', false);
+                setTimeout(() => window.location.href = 'tnp_dashboard.html', 600);
+            } else {
+                const message = data.message || 'Google sign-in failed. Please contact TNP admin.';
+                showError(message);
+                setLoading(false);
+            }
+        })
+        .catch(err => {
+            console.error('Google admin login error:', err);
+            showError('Unable to complete Google sign-in. Please try again later.');
+            setLoading(false);
+        });
+    }
+
+    function initializeAdminGoogleSignIn() {
+        fetch(`${API_BASE_URL}/auth/google/client-id`)
+            .then(res => res.json())
+            .then(config => {
+                if (!config.clientId) {
+                    console.warn('Google client ID is not configured for admin login.');
+                    return;
+                }
+                google.accounts.id.initialize({
+                    client_id: config.clientId,
+                    callback: handleGoogleCredentialResponse,
+                    ux_mode: 'popup'
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById('googleAdminSignInButton'),
+                    { theme: 'outline', size: 'large', text: 'signin_with' }
+                );
+            })
+            .catch(err => console.error('Unable to load Google admin login configuration', err));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        animateStats();
+        initializeAdminGoogleSignIn();
+        // Add dynamic date or welcome effect
+        const headerDate = new Date().getFullYear();
+        const footerText = document.querySelector('.footer p:first-child');
+        if (footerText) {
+            footerText.innerHTML = `<i class="fas fa-shield-alt"></i> Secure access · TNP Admin Cell v${headerDate}`;
+        }
+    });
+
+    // Live stats counter animation (just for visual polish)
+    function animateStats() {
+        const companyEl = document.getElementById('liveCompanies');
+        const offersEl = document.getElementById('liveOffers');
+        const studentsEl = document.getElementById('liveStudents');
+        if (!companyEl) return;
+        
+        const targets = { companies: 24, offers: 186, students: 658 };
+        let current = { companies: 12, offers: 90, students: 320 };
+        const step = () => {
+            let changed = false;
+            if (current.companies < targets.companies) {
+                current.companies += Math.ceil((targets.companies - current.companies) / 12);
+                companyEl.innerText = current.companies + '+';
+                changed = true;
+            }
+            if (current.offers < targets.offers) {
+                current.offers += Math.ceil((targets.offers - current.offers) / 12);
+                offersEl.innerText = current.offers + '+';
+                changed = true;
+            }
+            if (current.students < targets.students) {
+                current.students += Math.ceil((targets.students - current.students) / 12);
+                studentsEl.innerText = current.students + '+';
+                changed = true;
+            }
+            if (changed) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+    
+    // Enable Enter key for login
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            loginAdmin();
+        }
+    }
+    
+    usernameInput.addEventListener('keypress', handleKeyPress);
+    passwordInput.addEventListener('keypress', handleKeyPress);
+    
+    // Remove red border on focus again
+    usernameInput.addEventListener('focus', () => usernameInput.style.borderColor = '');
+    passwordInput.addEventListener('focus', () => passwordInput.style.borderColor = '');
+    
+    // Prefill demo? (only for testing, but no default credentials)
+    // For better UX: show placeholder hints
+    usernameInput.placeholder = "admin@tnp.edu";
+    passwordInput.placeholder = "••••••••";
+    
+    // On page load smooth entrance
+    window.addEventListener('DOMContentLoaded', () => {
+        animateStats();
+        // Add dynamic date or welcome effect
+        const headerDate = new Date().getFullYear();
+        const footerText = document.querySelector('.footer p:first-child');
+        if (footerText) {
+            footerText.innerHTML = `<i class="fas fa-shield-alt"></i> Secure access · TNP Admin Cell v${headerDate}`;
+        }
+    });
+    
+    // Additional touch of polish: Forgot password-like subtle message
+    const hintMessage = document.createElement('div');
+    hintMessage.style.fontSize = '0.7rem';
+    hintMessage.style.textAlign = 'right';
+    hintMessage.style.marginTop = '-15px';
+    hintMessage.style.marginBottom = '15px';
+    hintMessage.style.color = '#6c7a91';
+    hintMessage.innerHTML = '<i class="fas fa-key"></i> Default credentials provided by TPO';
+    const parentGroup = document.querySelector('.input-group:last-of-type');
+    if (parentGroup && parentGroup.parentNode) {
+        parentGroup.parentNode.insertBefore(hintMessage, parentGroup.nextSibling);
+    }
+</script>
+</body>
+</html>

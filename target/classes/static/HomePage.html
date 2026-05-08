@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>PCCOER Placement Portal | Campus to Career</title>
+    <!-- Tailwind + Fonts + Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 30%, rgba(248,250,252,1) 0%, rgba(241,245,249,1) 100%);
+            scroll-behavior: smooth;
+        }
+        .glass-nav {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(59,130,246,0.15);
+        }
+        .hero-glow {
+            background: linear-gradient(125deg, #0f2b6d 0%, #1e40af 55%, #2563eb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-glow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: slowFloat 50s linear infinite;
+        }
+        @keyframes slowFloat {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
+        .glass-card-modern {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.02);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        .glass-card-modern:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(0,0,0,0.2);
+            border-color: rgba(59,130,246,0.4);
+        }
+        .btn-3d {
+            transition: 0.2s ease;
+            box-shadow: 0 8px 14px -6px rgba(0,0,0,0.2);
+        }
+        .btn-3d:active {
+            transform: scale(0.96);
+        }
+        .hover-scale-img {
+            transition: transform 0.5s ease;
+        }
+        .hover-scale-img:hover {
+            transform: scale(1.02);
+        }
+        .stat-card {
+            background: white;
+            border-radius: 1.75rem;
+            transition: all 0.3s;
+            border: 1px solid #eef2ff;
+        }
+        .stat-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 18px 30px -12px rgba(59,130,246,0.2);
+        }
+        .feature-icon-bg {
+            background: linear-gradient(135deg, #eef2ff, #ffffff);
+            border-radius: 1.5rem;
+        }
+        .testimonial-card {
+            background: #ffffffcc;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+        .map-card {
+            transition: transform 0.25s ease, box-shadow 0.3s;
+        }
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.15);
+        }
+        .section-title {
+            background: linear-gradient(120deg, #1e293b, #1e3a8a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .footer-link-glow:hover {
+            text-shadow: 0 0 3px rgba(59,130,246,0.5);
+            transition: all 0.2s;
+        }
+        .animated-border {
+            position: relative;
+        }
+        .animated-border::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Modern Navbar with micro-interactions -->
+<nav class="glass-nav fixed w-full z-50 px-6 md:px-10 py-3 flex justify-between items-center shadow-sm transition-all duration-300">
+    <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+            <!-- College Logo -->
+            <img src="data:image/jpeg;base64,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" 
+             alt="PCCOER Logo"
+             class="w-14 h-14 object-contain rounded-lg shadow-md">
+
+            <div class="leading-tight hidden sm:block">
+                <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-800 to-blue-600 text-xl">PCCOER</span>
+                <p class="text-xs text-gray-500 font-medium">Placement & Career Hub</p>
+            </div>
+        </div>
+    </div>
+    <ul class="hidden md:flex gap-8 font-semibold text-gray-700">
+        <li><a href="HomePage.html" class="hover:text-blue-700 transition flex items-center gap-1"><i class="bi bi-house-door"></i> Home</a></li>
+        <li><a href="registration.html" class="hover:text-blue-700 transition flex items-center gap-1"><i class="bi bi-pencil-square"></i> Register</a></li>
+        <li><a href="companies_list.html" class="hover:text-blue-700 transition flex items-center gap-1"><i class="bi bi-building"></i> Companies</a></li>
+        <li><a href="analytics.html" class="hover:text-blue-700 transition flex items-center gap-1"><i class="bi bi-bar-chart-steps"></i> Stats</a></li>
+        <li><a href="http://127.0.0.1:5000" class="hover:text-blue-700 transition flex items-center gap-1"><i class="bi bi-cpu"></i> PCCOER GPT  </a></li>
+    </ul>
+    <div class="flex gap-2 md:hidden">
+        <i class="bi bi-list text-3xl text-gray-700"></i>
+    </div>
+</nav>
+
+<!-- Hero Section with enhanced visual -->
+<section id="hero" class="hero-glow pt-32 pb-24 px-6 relative overflow-hidden">
+    <div class="floating-particles"></div>
+    <div class="relative z-10 max-w-6xl mx-auto text-center">
+        <div class="inline-block bg-white/20 backdrop-blur-sm rounded-full px-5 py-1.5 mb-6 border border-white/30">
+            <span class="text-white font-medium text-sm tracking-wide"><p>Pimpri Chinchwad Education Trust’s Pimpri Chinchwad College of Engineering & Research Ravet,Pune An Autonomous Institute 
+                | NBA Accredited (4 UG Programs) |
+                NAAC A++ Accredited 
+                | ISO 21001:2018 Certified IQAC PCCOER
+</span>
+        </div>
+        <div class="mx-auto max-w-xs mt-8">
+            <img src="data:image/png;base64,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" alt="PCCOER Logo" class="mx-auto h-24 object-contain" />
+        </div>
+        <p class="mt-6 text-gray-100 text-lg md:text-xl max-w-3xl mx-auto opacity-95">Connect with 100+ dream companies, track opportunities, and unlock your career potential — all in one intelligent dashboard.</p>
+        <div class="mt-10 flex flex-wrap justify-center gap-5">
+            <a href="student_login.html" class="bg-white text-blue-700 px-8 py-3.5 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 hover:scale-105"> <i class="bi bi-mortarboard"></i> Student Login </a>
+            <a href="tnp_admin_login.html" class="bg-transparent border-2 border-white text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/10 transition-all flex items-center gap-2 backdrop-blur-sm"> <i class="bi bi-shield-lock"></i> Coordinator Portal </a>
+        </div>
+        <div class="mt-12 flex flex-wrap justify-center gap-6 text-white/80 text-sm font-medium">
+            <span><i class="bi bi-check2-circle text-green-300 mr-1"></i> 100+ Hiring Partners</span>
+            <span><i class="bi bi-trophy-fill text-amber-300 mr-1"></i> 92% Placement Record</span>
+            <span><i class="bi bi-clock-history mr-1"></i> 24/7 Smart Portal</span>
+        </div>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg class="relative block w-full h-12" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="white"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Login Cards - Enhanced accessibility and glow -->
+<div class="max-w-6xl mx-auto px-4 -mt-16 relative z-20">
+    <div class="grid md:grid-cols-2 gap-10">
+        <!-- Student card premium -->
+        <div class="glass-card-modern p-8 md:p-10 transition-all duration-500">
+            <div class="flex justify-between items-start">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center shadow-lg">
+                    <i class="bi bi-person-badge text-3xl"></i>
+                </div>
+                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">Popular</span>
+            </div>
+            <h2 class="text-3xl font-bold mt-6 text-gray-800">Student Portal</h2>
+            <p class="text-gray-500 mt-2 leading-relaxed">Your personalized cockpit for placements — view drives, apply seamlessly, and track progress.</p>
+            <div class="mt-6 space-y-2">
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-blue-500"></i> Real-time application status</div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-blue-500"></i> Resume builder & mock tests</div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-blue-500"></i> Company-specific prep material</div>
+            </div>
+            <a href="student_login.html" class="mt-8 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-bold py-3.5 rounded-xl btn-3d hover:shadow-blue-500/30 transition-all"> Access Dashboard <i class="bi bi-arrow-right"></i> </a>
+        </div>
+
+        <!-- T&P Coordinator card -->
+        <div class="glass-card-modern p-8 md:p-10 transition-all duration-500">
+            <div class="flex justify-between items-start">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-white flex items-center justify-center shadow-lg">
+                    <i class="bi bi-briefcase-fill text-3xl"></i>
+                </div>
+                <span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">Admin</span>
+            </div>
+            <h2 class="text-3xl font-bold mt-6 text-gray-800">T&P Coordinator</h2>
+            <p class="text-gray-500 mt-2 leading-relaxed">Powerful tools to manage drives, analyze data, and drive student success with actionable insights.</p>
+            <div class="mt-6 space-y-2">
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-emerald-500"></i> Company lifecycle management</div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-emerald-500"></i> Analytics & export reports</div>
+                <div class="flex items-center gap-2 text-gray-600"><i class="bi bi-check-lg text-emerald-500"></i> Student performance tracker</div>
+            </div>
+            <button id="showCoordinatorListButton" type="button" class="mt-8 flex items-center justify-center gap-2 w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold py-3.5 rounded-xl btn-3d hover:shadow-emerald-500/20 transition-all"> View Admin Coordinators <i class="bi bi-lock-fill"></i> </button>
+            <a href="tnp_admin_login.html" class="mt-4 inline-flex items-center justify-center gap-2 w-full bg-white text-emerald-700 font-bold py-3.5 rounded-xl btn-3d hover:shadow-emerald-500/20 transition-all"> Admin Login <i class="bi bi-box-arrow-in-right"></i> </a>
+        </div>
+    </div>
+</div>
+
+<!-- Registered TNP Coordinators -->
+<section id="coordinator-section" class="hidden max-w-6xl mx-auto px-4 py-20">
+    <div class="text-center mb-12">
+        <span class="text-blue-600 font-semibold tracking-wide uppercase text-sm">Coordinator Network</span>
+        <h2 class="text-4xl font-bold mt-3 section-title">Meet the TNP Coordinators</h2>
+        <p class="text-gray-500 max-w-2xl mx-auto mt-3">Live roster of TNP coordinators who have registered as admins on the portal.</p>
+    </div>
+    <div id="coordinatorList" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="glass-card-modern p-10 flex items-center justify-center text-gray-500 border border-dashed border-slate-300 rounded-3xl">
+            Loading coordinators...
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section with dynamic counters and modern cards -->
+<section class="max-w-6xl mx-auto px-4 py-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="stat-card p-8 text-center group">
+            <div class="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-100 transition"><i class="bi bi-building text-3xl text-blue-600"></i></div>
+            <div class="text-4xl font-black text-gray-800">128+</div>
+            <p class="font-semibold text-gray-600 mt-1">Active Recruiters</p>
+            <p class="text-sm text-gray-400">Fortune 500 & Unicorns</p>
+        </div>
+        <div class="stat-card p-8 text-center group">
+            <div class="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-100 transition"><i class="bi bi-graph-up text-3xl text-emerald-600"></i></div>
+            <div class="text-4xl font-black text-gray-800">92<span class="text-2xl">%</span></div>
+            <p class="font-semibold text-gray-600 mt-1">Placement Rate 2024</p>
+            <p class="text-sm text-gray-400">Highest CTC: 32 LPA</p>
+        </div>
+        <div class="stat-card p-8 text-center group">
+            <div class="bg-purple-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-100 transition"><i class="bi bi-people-fill text-3xl text-purple-600"></i></div>
+            <div class="text-4xl font-black text-gray-800">2100+</div>
+            <p class="font-semibold text-gray-600 mt-1">Students Placed</p>
+            <p class="text-sm text-gray-400">In last 3 academic years</p>
+        </div>
+    </div>
+</section>
+
+<!-- Success Stories / Testimonials - more visual -->
+<section class="py-16 bg-gradient-to-r from-slate-50 to-blue-50/30">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <span class="text-blue-600 font-semibold tracking-wide uppercase text-sm">Voices of success</span>
+            <h2 class="text-4xl font-bold mt-2 section-title">Inspiring Placement Stories</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto mt-3">Real journeys of PCCOER students who landed their dream offers</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-7 shadow-md border border-white/50 hover:shadow-xl transition-all">
+                <i class="bi bi-quote text-4xl text-blue-300 opacity-60"></i>
+                <p class="text-gray-700 mt-2 italic">“The AI predictor and company filters helped me shortlist exactly where I fit. Got selected in Amazon with 24 LPA!”</p>
+                <div class="flex items-center gap-3 mt-6">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-blue-200" alt="student">
+                    <div><h5 class="font-bold">Aditya K.</h5><p class="text-xs text-gray-500">SDE, Amazon</p></div>
+                </div>
+            </div>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-7 shadow-md border border-white/50 hover:shadow-xl transition-all">
+                <i class="bi bi-quote text-4xl text-blue-300 opacity-60"></i>
+                <p class="text-gray-700 mt-2 italic">“Placement portal kept me updated with every drive. Coordinators were super supportive. Got placed at Microsoft.”</p>
+                <div class="flex items-center gap-3 mt-6">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-blue-200" alt="student">
+                    <div><h5 class="font-bold">Neha S.</h5><p class="text-xs text-gray-500">SWE, Microsoft</p></div>
+                </div>
+            </div>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-7 shadow-md border border-white/50 hover:shadow-xl transition-all">
+                <i class="bi bi-quote text-4xl text-blue-300 opacity-60"></i>
+                <p class="text-gray-700 mt-2 italic">“T&P analytics dashboard gave real-time insights. We improved our placement strategy, and the results speak for themselves.”</p>
+                <div class="flex items-center gap-3 mt-6">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-blue-200" alt="coordinator">
+                    <div><h5 class="font-bold">Prof. Mehta</h5><p class="text-xs text-gray-500">T&P Coordinator</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Highlights : Why PCCOER Placements -->
+<section class="py-20">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold section-title">Why PCCOER stands out</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto mt-2">Holistic training, industry-aligned curriculum, and 360° placement support</p>
+        </div>
+        <div class="grid md:grid-cols-4 gap-7">
+            <div class="text-center p-5 rounded-2xl transition hover:bg-white/50"><div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center mx-auto text-2xl"><i class="bi bi-laptop"></i></div><h4 class="font-bold mt-4">Coding Bootcamps</h4><p class="text-sm text-gray-500">Regular workshops by industry experts</p></div>
+            <div class="text-center p-5 rounded-2xl transition hover:bg-white/50"><div class="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center mx-auto text-2xl"><i class="bi bi-briefcase"></i></div><h4 class="font-bold mt-4">Mock Interviews</h4><p class="text-sm text-gray-500">Real-time HR & technical rounds</p></div>
+            <div class="text-center p-5 rounded-2xl transition hover:bg-white/50"><div class="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center mx-auto text-2xl"><i class="bi bi-bar-chart-line"></i></div><h4 class="font-bold mt-4">Live Analytics</h4><p class="text-sm text-gray-500">Track placement trends & eligibility</p></div>
+            <div class="text-center p-5 rounded-2xl transition hover:bg-white/50"><div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl"><i class="bi bi-robot"></i></div><h4 class="font-bold mt-4">AI Predictor</h4><p class="text-sm text-gray-500">ML-based placement probability</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Map & Campus Info - Enhanced interactive layout -->
+<section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-semibold">📍 Visit Us</span>
+            <h2 class="text-4xl font-bold mt-3 section-title">PCCOER Campus Hub</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">State-of-the-art infrastructure in the heart of Pune's educational corridor</p>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-10 items-stretch">
+            <div class="rounded-2xl overflow-hidden shadow-2xl map-card">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.917875500394!2d73.75050997493378!3d18.610940782497954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9df5c5f61f5%3A0xf8d2e447d5a01c0e!2sPimpri%20Chinchwad%20College%20Of%20Engineering%20%26%20Research!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="min-height: 340px; border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full h-full object-cover"></iframe>
+            </div>
+            <div class="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div class="flex items-center gap-3 mb-5"><i class="bi bi-geo-alt-fill text-blue-600 text-3xl"></i><h3 class="text-2xl font-bold">PCET's PCCOER, Ravet</h3></div>
+                <div class="space-y-4 text-gray-600">
+                    <p><i class="bi bi-pin-map-fill text-blue-500 w-6"></i> Mumbai - Pune Bypass, Ravet, Pune - 412101</p>
+                    <p><i class="bi bi-telephone-fill text-blue-500"></i> Placement Cell: +91 20 6790 1234</p>
+                    <p><i class="bi bi-envelope-paper-fill text-blue-500"></i> placements@pccoer.ac.in</p>
+                    <p><i class="bi bi-clock-fill text-blue-500"></i> Mon-Fri: 9am–6pm | Sat: 10am–2pm</p>
+                </div>
+                <hr class="my-5">
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-50 px-4 py-2 rounded-full text-sm font-medium"><i class="bi bi-bus-front"></i> 5 mins to Ravet stop</span>
+                    <span class="bg-green-50 px-4 py-2 rounded-full text-sm font-medium"><i class="bi bi-train-front"></i> 3.5km to Chinchwad station</span>
+                    <span class="bg-amber-50 px-4 py-2 rounded-full text-sm font-medium"><i class="bi bi-cup-straw"></i> Food court & hostel</span>
+                </div>
+                <a href="https://maps.app.goo.gl/example" target="_blank" class="inline-flex mt-6 items-center gap-2 text-blue-700 font-semibold hover:gap-3 transition-all">Get directions <i class="bi bi-arrow-right-short text-xl"></i></a>
+            </div>
+        </div>
+        <!-- nearby landmarks better UI -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-12">
+            <div class="flex gap-3 p-4 rounded-xl bg-white shadow-sm"><i class="bi bi-shop text-2xl text-blue-500"></i><div><h5 class="font-semibold">Phoenix Mall</h5><p class="text-xs text-gray-500">2.5 km | Shopping & dining</p></div></div>
+            <div class="flex gap-3 p-4 rounded-xl bg-white shadow-sm"><i class="bi bi-hospital text-2xl text-blue-500"></i><div><h5 class="font-semibold">D.Y. Patil Hospital</h5><p class="text-xs text-gray-500">3 km | multi-speciality</p></div></div>
+            <div class="flex gap-3 p-4 rounded-xl bg-white shadow-sm"><i class="bi bi-cup-straw text-2xl text-blue-500"></i><div><h5 class="font-semibold">Food Hub Wakad</h5><p class="text-xs text-gray-500">5 min drive | street food & cafes</p></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick links / CTA banner -->
+<div class="bg-gradient-to-r from-blue-900 to-indigo-900 py-14 my-8 rounded-none md:rounded-3xl mx-4 md:mx-10 shadow-2xl">
+    <div class="max-w-4xl mx-auto text-center text-white px-4">
+        <h3 class="text-3xl md:text-4xl font-bold">Ready to accelerate your career?</h3>
+        <p class="text-blue-100 mt-2 text-lg">Join the league of top recruiters & ambitious students. Unlock exclusive opportunities today.</p>
+        <div class="flex flex-wrap gap-4 justify-center mt-8">
+            <a href="registration.html" class="bg-white text-blue-800 px-7 py-3 rounded-full font-bold hover:scale-105 transition shadow-lg">Register Now <i class="bi bi-arrow-right-circle"></i></a>
+            <a href="companies_list.html" class="border-2 border-white text-white px-7 py-3 rounded-full font-semibold hover:bg-white/10 transition">View Companies</a>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Footer with dynamic links & smooth design -->
+<footer class="bg-gray-900 text-gray-300 pt-16 pb-8 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
+        <div>
+            <div class="flex items-center gap-2"><i class="bi bi-mortarboard-fill text-3xl text-blue-400"></i><span class="font-black text-white text-xl">PCCOER Placements</span></div>
+            <p class="mt-4 text-sm text-gray-400">Empowering engineers since 2009 — bridging talent and industry with innovation.</p>
+            <div class="flex gap-4 mt-5">
+                <a href="https://www.linkedin.com/company/pccoer-pcet/posts/?feedView=all" target="_blank" rel="noopener noreferrer" title="Visit PCCOER LinkedIn" class="hover:text-white transition text-xl"><i class="bi bi-linkedin"></i></a>
+                <a href="https://www.instagram.com/pccoer_official/" target="_blank" rel="noopener noreferrer" title="Visit PCCOER Instagram" class="hover:text-white transition text-xl"><i class="bi bi-instagram"></i></a>
+                <a href="https://x.com/Pccoer1990" target="_blank" rel="noopener noreferrer" title="Visit PCCOER Twitter" class="hover:text-white transition text-xl"><i class="bi bi-twitter-x"></i></a>
+            <a href="https://www.facebook.com/pccoerpune/" target="_blank" rel="noopener noreferrer" title="Visit PCCOER Facebook" class="hover:text-white transition text-xl"> <i class="bi bi-facebook"></i> </a>
+            </div>
+        </div>
+        <div>
+            <h5 class="font-bold text-white mb-4">Quick Access</h5>
+            <ul class="space-y-2 text-sm">
+                <li><a href="registration.html" class="hover:text-blue-400 flex items-center gap-1"><i class="bi bi-chevron-right"></i> Student Registration</a></li>
+                <li><a href="companies_list.html" class="hover:text-blue-400 flex items-center gap-1"><i class="bi bi-chevron-right"></i> Company Directory</a></li>
+                <li><a href="analytics.html" class="hover:text-blue-400 flex items-center gap-1"><i class="bi bi-chevron-right"></i> Placement Analytics</a></li>
+                <li><a href="http://127.0.0.1:5000" class="hover:text-blue-400 flex items-center gap-1"><i class="bi bi-chevron-right"></i>PCCOER GPT</a></li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="font-bold text-white mb-4">Support</h5>
+            <ul class="space-y-2 text-sm">
+                <li><i class="bi bi-envelope me-2"></i> tpo@pccoer.edu.in</li>
+                <li><i class="bi bi-telephone"></i> +91-20-67901234</li>
+                <li><i class="bi bi-chat-dots"></i> Helpline: 9am – 5pm</li>
+            </ul>
+        </div>
+        <div>
+            <h5 class="font-bold text-white mb-4">Important Links</h5>
+            <ul class="space-y-2 text-sm">
+                <li><a href="#" class="hover:text-blue-400">Placement Brochure</a></li>
+                <li><a href="#" class="hover:text-blue-400">Training Calendar</a></li>
+                <li><a href="#" class="hover:text-blue-400">Alumni Network</a></li>
+                <li><a href="#" class="hover:text-blue-400">Anti-Ragging</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-gray-800 mt-12 pt-6 text-center text-sm text-gray-500 flex flex-col md:flex-row justify-between max-w-6xl mx-auto">
+        <p>© 2025 PCCOER Placement Portal — All Rights Reserved.</p>
+        <p class="mt-2 md:mt-0">Designed for future innovators 💡 | PCET’s PCCOER</p>
+    </div>
+</footer>
+
+<!-- smooth scroll behavior for anchor links -->
+<script>
+    async function loadCoordinators() {
+        const listContainer = document.getElementById('coordinatorList');
+        try {
+            const res = await fetch('/api/admin/coordinators');
+            if (!res.ok) {
+                throw new Error(`Failed to load coordinators: ${res.status}`);
+            }
+            const coordinators = await res.json();
+            if (!Array.isArray(coordinators) || coordinators.length === 0) {
+                listContainer.innerHTML = `<div class="glass-card-modern p-10 text-center text-gray-500 border border-dashed border-slate-300 rounded-3xl">No coordinators registered yet.</div>`;
+                return;
+            }
+            listContainer.innerHTML = coordinators.map(coord => `
+                <div class="glass-card-modern p-8 hover:shadow-xl transition-all rounded-3xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-sm text-emerald-600 font-semibold">${coord.role || 'TNP Coordinator'}</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-2">${coord.fullName || coord.username}</h3>
+                        </div>
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl text-slate-600">${coord.fullName ? coord.fullName.charAt(0).toUpperCase() : coord.username.charAt(0).toUpperCase()}</div>
+                    </div>
+                    <p class="text-gray-600"><span class="font-semibold">Username:</span> ${coord.username}</p>
+                    <p class="text-gray-600 mt-2"><span class="font-semibold">Department:</span> ${coord.department || 'N/A'}</p>
+                    <p class="text-gray-600 mt-2"><span class="font-semibold">Email:</span> ${coord.email}</p>
+                </div>
+            `).join('');
+        } catch (error) {
+            listContainer.innerHTML = `<div class="glass-card-modern p-10 text-center text-red-600 border border-dashed border-red-200 rounded-3xl">Unable to load coordinators right now.</div>`;
+            console.error(error);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== "#" && href !== "#hero" && href !== "#") {
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    let coordinatorsLoaded = false;
+    const showCoordinatorListButton = document.getElementById('showCoordinatorListButton');
+    const coordinatorSection = document.getElementById('coordinator-section');
+
+    if (showCoordinatorListButton) {
+        showCoordinatorListButton.addEventListener('click', async () => {
+            if (coordinatorSection && coordinatorSection.classList.contains('hidden')) {
+                coordinatorSection.classList.remove('hidden');
+            }
+            if (!coordinatorsLoaded) {
+                await loadCoordinators();
+                coordinatorsLoaded = true;
+            }
+            if (coordinatorSection) {
+                coordinatorSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+</script>
+</body>
+</html>

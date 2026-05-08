@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications | PCCOER Placement Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #1e293b; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 40px auto; background: white; padding: 32px; border-radius: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        h2 { font-size: 24px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th { text-align: left; background: #f1f5f9; padding: 16px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+        th:first-child { border-top-left-radius: 12px; }
+        th:last-child { border-top-right-radius: 12px; }
+        td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 15px; }
+        tr:last-child td { border-bottom: none; }
+        .status-pill { padding: 6px 12px; border-radius: 40px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+        .status-pending { background: #fffbeb; color: #92400e; }
+        .status-accepted { background: #ecfdf5; color: #065f46; }
+        .status-rejected { background: #fef2f2; color: #991b1b; }
+        .back-btn { margin-bottom: 20px; background: none; border: none; color: var(--primary); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .empty-state { text-align: center; padding: 40px; color: #64748b; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="back-btn" onclick="window.location.href='student_dashboard.html'"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+    <h2><i class="fas fa-file-invoice"></i> My Applications</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Status</th>
+            <th>Applied Date</th>
+        </tr>
+        </thead>
+        <tbody id="myApps">
+            <tr><td colspan="3" class="empty-state">Loading your applications...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="api.js"></script>
+<script>
+    (async function() {
+        const studentId = localStorage.getItem("studentId");
+        if (!studentId) {
+            window.location.href = "student_login.html";
+            return;
+        }
+
+        try {
+            const res = await apiFetch(`/student/applications/${studentId}`);
+            const tbody = document.getElementById("myApps");
+            
+            if (!res.ok) throw new Error(res.error || "Failed to load applications");
+            
+            const data = res.data || [];
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="empty-state">No applications found yet. Start applying to companies!</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(app => {
+                let statusClass = "status-pending";
+                let statusIcon = "fa-clock";
+                const status = (app.status || "Pending").toLowerCase();
+                
+                if (status.includes("accept") || status.includes("shortlist") || status.includes("select")) {
+                    statusClass = "status-accepted";
+                    statusIcon = "fa-check-circle";
+                } else if (status.includes("reject") || status.includes("not eligible")) {
+                    statusClass = "status-rejected";
+                    statusIcon = "fa-times-circle";
+                }
+
+                return `
+                    <tr>
+                        <td><strong>${app.companyName || "Unknown Company"}</strong></td>
+                        <td>
+                            <span class="status-pill ${statusClass}">
+                                <i class="fas ${statusIcon}"></i>
+                                ${app.status || "Pending"}
+                            </span>
+                        </td>
+                        <td style="color: #64748b">${app.appliedDate || "N/A"}</td>
+                    </tr>`;
+            }).join('');
+        } catch (error) {
+            console.error(error);
+            document.getElementById("myApps").innerHTML = `<tr><td colspan="3" class="empty-state" style="color: var(--danger)">Error: ${error.message}</td></tr>`;
+        }
+    })();
+</script>
+</body>
+</html>

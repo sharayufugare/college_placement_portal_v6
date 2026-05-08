@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Student Registration | PCCOER T&P Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #eef2ff;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --light: #fafcff;
+            --light-gray: #f1f5f9;
+            --border-light: #e2e8f0;
+            --dark: #0f172a;
+            --gray: #475569;
+            --gray-light: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border-radius-xl: 28px;
+            --border-radius-lg: 20px;
+            --border-radius-md: 16px;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f8fafd 0%, #eef2ff 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Main Card Layout */
+        .registration-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            border-radius: var(--border-radius-xl);
+            overflow: hidden;
+            background: white;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+
+        /* LEFT PANEL - Premium Brand Section */
+        .registration-left {
+            background: linear-gradient(135deg, #0f2b6d 0%, #1e40af 50%, #3b82f6 100%);
+            color: white;
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .registration-left::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .logo-text h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .logo-text p {
+            font-size: 13px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 48px;
+        }
+
+        .hero-text h2 {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-text p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.5;
+            max-width: 90%;
+        }
+
+        .feature-grid {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .feature-text h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        /* RIGHT PANEL - Registration Form */
+        .registration-right {
+            background: white;
+            padding: 48px 44px;
+            overflow-y: auto;
+            max-height: 90vh;
+            scrollbar-width: thin;
+        }
+
+        .registration-right::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .registration-right::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+
+        .registration-right::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* Progress Indicator */
+        .progress-container {
+            margin-bottom: 32px;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        /* Form Header */
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-header h3 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--gray-light);
+            font-size: 15px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            animation: fadeSlideUp 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.05s; }
+        .form-group:nth-child(2) { animation-delay: 0.1s; }
+        .form-group:nth-child(3) { animation-delay: 0.15s; }
+        .form-group:nth-child(4) { animation-delay: 0.2s; }
+        .form-group:nth-child(5) { animation-delay: 0.25s; }
+        .form-group:nth-child(6) { animation-delay: 0.3s; }
+        .form-group:nth-child(7) { animation-delay: 0.35s; }
+        .form-group:nth-child(8) { animation-delay: 0.4s; }
+        .form-group:nth-child(9) { animation-delay: 0.45s; }
+        .form-group:nth-child(10) { animation-delay: 0.5s; }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .form-label i {
+            color: var(--primary);
+            font-size: 14px;
+            width: 18px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.12);
+        }
+
+        .form-control:hover:not(:focus) {
+            border-color: #cbd5e1;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234361ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 42px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Radio Group Styling */
+        .radio-group {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-light);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .radio-custom::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom {
+            border-color: var(--primary);
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-custom::after {
+            opacity: 1;
+        }
+
+        .radio-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        /* Validation States */
+        .form-control.error {
+            border-color: var(--error);
+            background-color: #fef2f2;
+        }
+
+        .form-control.success {
+            border-color: var(--success);
+            background-color: #f0fdf4;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+
+        /* Form Footer */
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-light);
+            margin-top: 8px;
+        }
+
+        .login-link {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .login-link a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-light);
+            transform: translateY(-1px);
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--success);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            font-size: 22px;
+        }
+
+        .toast-message {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .registration-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .registration-left {
+                padding: 36px 32px;
+            }
+            .registration-right {
+                padding: 36px 32px;
+                max-height: none;
+            }
+            .hero-text h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 16px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .registration-right {
+                padding: 28px 20px;
+            }
+            .form-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                justify-content: center;
+            }
+            .radio-group {
+                gap: 18px;
+            }
+            .hero-text h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="registration-wrapper">
+        <!-- LEFT PANEL - Modern Brand Section -->
+        <div class="registration-left">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>PCCOER</h1>
+                    <p>Training & Placement Cell</p>
+                </div>
+            </div>
+
+            <div class="hero-text">
+                <h2>Launch Your<br>Dream Career</h2>
+                <p>Join 2000+ placed students. Get access to 100+ recruiters, skill assessments, and personalized placement assistance.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-building"></i></div>
+                    <div class="feature-text">
+                        <h4>Top Recruiters</h4>
+                        <p>Microsoft, Amazon, Google, Goldman Sachs & more</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="feature-text">
+                        <h4>92% Placement Rate</h4>
+                        <p>Consistently high success record</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-robot"></i></div>
+                    <div class="feature-text">
+                        <h4>AI-Powered Insights</h4>
+                        <p>Smart job recommendations & prep</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL - Registration Form (Eligibility Criteria Removed) -->
+        <div class="registration-right">
+            <div class="progress-container">
+                <div class="progress-stats">
+                    <span><i class="fas fa-check-circle" style="color: var(--primary);"></i> Profile Completion</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="form-header">
+                <h3>Create Account</h3>
+                <p>Fill in your details to unlock placement opportunities</p>
+            </div>
+
+            <form id="registrationForm">
+                <div class="form-grid">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="fullName">
+                            <i class="fas fa-user"></i> Full Name <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Enter your full name" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <!-- PRN -->
+                    <div class="form-group">
+                        <label class="form-label" for="prn">
+                            <i class="fas fa-id-card"></i> PRN <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="text" id="prn" class="form-control" placeholder="Enter your PRN" required>
+                        <div class="error-message" id="prnError"></div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            <i class="fas fa-envelope"></i> Email <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="email" id="email" class="form-control" placeholder="college.email@example.com" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="password">
+                            <i class="fas fa-lock"></i> Password <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="password" id="password" class="form-control" placeholder="Create a strong password" required>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">
+                            <i class="fas fa-check-circle"></i> Confirm Password <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                        <div class="error-message" id="confirmError"></div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-venus-mars"></i> Gender <span style="color: var(--error);">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="Male" required>
+                                <span class="radio-custom"></span>
+                                <span class="radio-text">Male</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="Female" required>
+                                <span class="radio-custom"></span>
+                                <span class="radio-text">Female</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="gender" value="Other" required>
+                                <span class="radio-custom"></span>
+                                <span class="radio-text">Other</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="genderError"></div>
+                    </div>
+
+                    <!-- CGPA -->
+                    <div class="form-group">
+                        <label class="form-label" for="cgpa">
+                            <i class="fas fa-star"></i> CGPA <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="number" id="cgpa" class="form-control" step="0.01" min="0" max="10" placeholder="e.g., 8.5" required>
+                        <div class="error-message" id="cgpaError"></div>
+                    </div>
+
+                    <!-- Branch -->
+                    <div class="form-group">
+                        <label class="form-label" for="branch">
+                            <i class="fas fa-code-branch"></i> Branch <span style="color: var(--error);">*</span>
+                        </label>
+                        <select id="branch" class="form-control" required>
+                            <option value="" disabled selected>Select your branch</option>
+                            <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics & Communication">Electronics & Communication</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="Biotechnology">Biotechnology</option>
+                        </select>
+                        <div class="error-message" id="branchError"></div>
+                    </div>
+
+                    <!-- Year of Study -->
+                    <div class="form-group">
+                        <label class="form-label" for="year">
+                            <i class="fas fa-calendar-alt"></i> Year of Study <span style="color: var(--error);">*</span>
+                        </label>
+                        <select id="year" class="form-control" required>
+                            <option value="" disabled selected>Select year</option>
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                        </select>
+                        <div class="error-message" id="yearError"></div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label class="form-label" for="phone">
+                            <i class="fas fa-phone"></i> Phone Number <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="tel" id="phone" class="form-control" placeholder="+91 9876543210" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+
+                    <!-- Skills (Full Width) -->
+                    <div class="form-group full-width">
+                        <label class="form-label" for="skills">
+                            <i class="fas fa-tools"></i> Technical Skills <span style="color: var(--error);">*</span>
+                        </label>
+                        <input type="text" id="skills" class="form-control" placeholder="e.g., Python, Java, React, SQL, Machine Learning" required>
+                        <div class="error-message" id="skillsError"></div>
+                    </div>
+
+                    <!-- LinkedIn Profile -->
+                    <div class="form-group">
+                        <label class="form-label" for="linkedin">
+                            <i class="fab fa-linkedin"></i> LinkedIn Profile
+                        </label>
+                        <input type="url" id="linkedin" class="form-control" placeholder="https://linkedin.com/in/username">
+                        <div class="error-message" id="linkedinError"></div>
+                    </div>
+
+                    <!-- GitHub Profile -->
+                    <div class="form-group">
+                        <label class="form-label" for="github">
+                            <i class="fab fa-github"></i> GitHub Profile
+                        </label>
+                        <input type="url" id="github" class="form-control" placeholder="https://github.com/username">
+                        <div class="error-message" id="githubError"></div>
+                    </div>
+
+                    <!-- Achievements (Full Width) -->
+                    <div class="form-group full-width">
+                        <label class="form-label" for="achievements">
+                            <i class="fas fa-trophy"></i> Achievements & Projects
+                        </label>
+                        <textarea id="achievements" class="form-control" rows="3" placeholder="List your achievements, hackathons, certifications, projects, publications..."></textarea>
+                        <div class="error-message" id="achievementsError"></div>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div class="login-link">
+                        <i class="fas fa-arrow-left"></i> Already have an account? <a href="student_login.html">Sign in here</a>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-undo-alt"></i> Clear
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getApiBaseUrl() {
+        const { protocol, hostname, port, origin } = window.location;
+        const localHost = hostname === 'localhost' || hostname === '127.0.0.1';
+        const servedByBackend = localHost && port === '9090';
+
+        if (servedByBackend) return origin;
+        if (protocol === 'file:') return 'http://localhost:9090';
+        if (localHost) return 'http://localhost:9090';
+        return origin;
+    }
+
+    const API_BASE_URL = getApiBaseUrl();
+
+    // DOM Elements
+    const form = document.getElementById('registrationForm');
+    const progressFill = document.getElementById('progressFill');
+    const progressPercent = document.getElementById('progressPercent');
+    const allFields = document.querySelectorAll('#registrationForm input, #registrationForm select, #registrationForm textarea');
+
+    // Validation Rules
+    const validationRules = {
+        fullName: {
+            validate: (v) => v.trim().length >= 3,
+            message: "Name must be at least 3 characters"
+        },
+        email: {
+            validate: (v) => /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(v),
+            message: "Enter a valid email address"
+        },
+        password: {
+            validate: (v) => v.length >= 6,
+            message: "Password must be at least 6 characters"
+        },
+        cgpa: {
+            validate: (v) => {
+                let num = parseFloat(v);
+                return !isNaN(num) && num >= 0 && num <= 10;
+            },
+            message: "CGPA must be between 0 and 10"
+        },
+        phone: {
+            validate: (v) => /^[\+]?[0-9\-\s]{10,15}$/.test(v),
+            message: "Enter a valid phone number (10-15 digits)"
+        },
+        linkedin: {
+            validate: (v) => {
+                if (!v.trim()) return true;
+                return /^(https?:\/\/)?(www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_]+\/?$/.test(v);
+            },
+            message: "Enter a valid LinkedIn profile URL"
+        },
+        github: {
+            validate: (v) => {
+                if (!v.trim()) return true;
+                return /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9\-_]+\/?$/.test(v);
+            },
+            message: "Enter a valid GitHub profile URL"
+        },
+        skills: {
+            validate: (v) => v.trim().length >= 3,
+            message: "Please enter at least one skill"
+        },
+        branch: {
+            validate: (v) => v !== null && v !== '',
+            message: "Please select your branch"
+        },
+        year: {
+            validate: (v) => v !== null && v !== '',
+            message: "Please select your year of study"
+        }
+    };
+
+    // Update progress bar
+    function updateProgress() {
+        let filled = 0;
+        const requiredFields = ['fullName', 'prn', 'email', 'password', 'confirmPassword', 'cgpa', 'branch', 'year', 'phone', 'skills'];
+        let genderSelected = document.querySelector('input[name="gender"]:checked');
+
+        requiredFields.forEach(id => {
+            const field = document.getElementById(id);
+            if (field && field.value.trim() !== '') filled++;
+        });
+        if (genderSelected) filled++;
+
+        const total = requiredFields.length + 1;
+        let percent = Math.round((filled / total) * 100);
+        percent = Math.min(percent, 100);
+        progressFill.style.width = `${percent}%`;
+        progressPercent.innerText = `${percent}%`;
+    }
+
+    // Validate single field
+    function validateField(field) {
+        const id = field.id;
+        const value = field.value;
+        const errorDiv = document.getElementById(`${id}Error`);
+
+        if (validationRules[id]) {
+            const rule = validationRules[id];
+            if (!rule.validate(value)) {
+                field.classList.add('error');
+                field.classList.remove('success');
+                if (errorDiv) {
+                    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${rule.message}`;
+                    errorDiv.style.display = 'flex';
+                }
+                return false;
+            } else {
+                field.classList.remove('error');
+                field.classList.add('success');
+                if (errorDiv) errorDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Password confirmation check separately
+        if (id === 'confirmPassword') {
+            const password = document.getElementById('password').value;
+            if (value !== password) {
+                field.classList.add('error');
+                field.classList.remove('success');
+                if (errorDiv) {
+                    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Passwords do not match`;
+                    errorDiv.style.display = 'flex';
+                }
+                return false;
+            } else if (value !== '') {
+                field.classList.remove('error');
+                field.classList.add('success');
+                if (errorDiv) errorDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        // Required field validation
+        if (field.required && value.trim() === '') {
+            field.classList.add('error');
+            field.classList.remove('success');
+            if (errorDiv) {
+                errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> This field is required`;
+                errorDiv.style.display = 'flex';
+            }
+            return false;
+        } else {
+            field.classList.remove('error');
+            field.classList.add('success');
+            if (errorDiv) errorDiv.style.display = 'none';
+            return true;
+        }
+    }
+
+    // Validate gender
+    function validateGender() {
+        const genderSelected = document.querySelector('input[name="gender"]:checked');
+        const genderError = document.getElementById('genderError');
+        if (!genderSelected) {
+            genderError.innerHTML = `<i class="fas fa-exclamation-circle"></i> Please select your gender`;
+            genderError.style.display = 'flex';
+            return false;
+        } else {
+            genderError.style.display = 'none';
+            return true;
+        }
+    }
+
+    // Full form validation
+    function validateFullForm() {
+        let isValid = true;
+        const fieldsToCheck = ['fullName', 'prn', 'email', 'password', 'confirmPassword', 'cgpa', 'branch', 'year', 'phone', 'skills'];
+        fieldsToCheck.forEach(id => {
+            const field = document.getElementById(id);
+            if (!validateField(field)) isValid = false;
+        });
+        if (!validateGender()) isValid = false;
+        return isValid;
+    }
+
+    // Add event listeners
+    allFields.forEach(field => {
+        field.addEventListener('input', function() {
+            validateField(this);
+            updateProgress();
+        });
+        field.addEventListener('change', function() {
+            validateField(this);
+            updateProgress();
+        });
+    });
+
+    document.querySelectorAll('input[name="gender"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            validateGender();
+            updateProgress();
+        });
+    });
+
+    // Show toast notification
+    function showToast(message, isError = false) {
+        let toast = document.querySelector('.toast-notification');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            document.body.appendChild(toast);
+        }
+        toast.innerHTML = `
+            <div class="toast-icon" style="color: ${isError ? 'var(--error)' : 'var(--success)'}">
+                <i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+            </div>
+            <div class="toast-message">${message}</div>
+        `;
+        toast.style.borderLeftColor = isError ? 'var(--error)' : 'var(--success)';
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        if (!validateFullForm()) {
+            showToast("Please fill all required fields correctly", true);
+            const firstError = document.querySelector('.error');
+            if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        const formData = {
+            name: document.getElementById('fullName').value.trim(),
+            prn: document.getElementById('prn').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+            gender: document.querySelector('input[name="gender"]:checked').value,
+            cgpa: parseFloat(document.getElementById('cgpa').value),
+            branch: document.getElementById('branch').value,
+            year: document.getElementById('year').value,
+            phone: document.getElementById('phone').value.trim(),
+            skills: document.getElementById('skills').value.trim(),
+            linkedin: document.getElementById('linkedin').value.trim(),
+            github: document.getElementById('github').value.trim(),
+            achievements: document.getElementById('achievements').value.trim()
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/student/register`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
+            if (!response.ok) {
+                const errText = await response.text();
+                let errData = null;
+                try { errData = JSON.parse(errText); } catch (ignore) {}
+                throw new Error(errData?.message || errText || "Registration failed");
+            }
+            const result = await response.json();
+            showToast("Registration successful! 🎉 Redirecting to login...");
+            setTimeout(() => {
+                window.location.href = "HomePage.html";
+            }, 1500);
+        } catch (err) {
+            const isNetworkError = err instanceof TypeError || /Failed to fetch/i.test(String(err?.message || ''));
+            showToast(
+                isNetworkError
+                    ? "Cannot reach server. Start backend on http://localhost:9090."
+                    : err.message,
+                true
+            );
+        }
+    });
+
+    // Reset form
+    function resetForm() {
+        form.reset();
+        allFields.forEach(field => {
+            field.classList.remove('error', 'success');
+            const errDiv = document.getElementById(`${field.id}Error`);
+            if (errDiv) errDiv.style.display = 'none';
+        });
+        const genderError = document.getElementById('genderError');
+        if (genderError) genderError.style.display = 'none';
+        updateProgress();
+        showToast("Form cleared", false);
+    }
+
+    // Phone number formatting
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let val = e.target.value.replace(/\D/g, '');
+        if (val.length > 10) val = val.slice(0, 10);
+        if (val.length >= 6) {
+            val = val.slice(0, 5) + '-' + val.slice(5);
+        }
+        e.target.value = val;
+    });
+
+    // Initial progress
+    updateProgress();
+</script>
+</body>
+</html>

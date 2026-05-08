@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Student Dashboard | PCCOER Placement Portal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #eef2ff;
+            --secondary: #7209b7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --border-radius-xl: 24px;
+            --border-radius-lg: 20px;
+            --border-radius-md: 16px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafd 0%, #f1f5f9 100%);
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.12);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--gray-600);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-600);
+        }
+
+        .nav-btn:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        #logoutBtn {
+            background: var(--danger);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 10px;
+        }
+
+        #logoutBtn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--border-radius-lg);
+            padding: 32px 40px;
+            margin-bottom: 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .welcome-banner h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Layout */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 28px;
+        }
+
+        /* Company Cards Grid */
+        .companies-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .companies-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .company-count {
+            color: var(--gray-600);
+            font-size: 14px;
+            background: var(--gray-100);
+            padding: 6px 14px;
+            border-radius: 30px;
+        }
+
+        .company-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        /* Company Card */
+        .company-card {
+            background: white;
+            border-radius: var(--border-radius-md);
+            padding: 20px 24px;
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .company-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .company-name i {
+            font-size: 20px;
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-open {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .status-closed {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .company-meta {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .company-meta i {
+            width: 16px;
+            margin-right: 4px;
+        }
+
+        .skills-section {
+            margin: 16px 0;
+        }
+
+        .skills-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .criteria-box {
+            background: #fef9e6;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 3px solid var(--warning);
+        }
+
+        .criteria-box i {
+            font-size: 18px;
+            color: var(--warning);
+        }
+
+        .criteria-text {
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .eligibility-reason {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .apply-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .apply-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .apply-btn:disabled {
+            background: var(--gray-300);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 28px;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .skills-preview {
+            margin-top: 16px;
+        }
+
+        .skills-preview .skills-list {
+            margin-top: 8px;
+        }
+
+        /* Filter Section */
+        .filter-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .filter-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group {
+            margin-bottom: 16px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray-600);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .filter-select, .filter-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .filter-btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .filter-btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .filter-btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Info Card */
+        .info-card {
+            background: linear-gradient(135deg, var(--primary-light), white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            border: 1px solid var(--primary-light);
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card ul {
+            padding-left: 20px;
+            color: var(--gray-700);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            color: var(--gray-300);
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        /* Loading */
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+            .main-container {
+                padding: 20px;
+            }
+            .navbar {
+                padding: 12px 20px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .welcome-banner {
+                padding: 24px;
+            }
+            .welcome-banner h2 {
+                font-size: 22px;
+            }
+            .card-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+        <div class="logo-text">
+            <h1>PCCOER Placement Portal</h1>
+            <p>Student Dashboard</p>
+        </div>
+    </div>
+    <div class="nav-links">
+        <a href="HomePage.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+        <button id="logoutBtn" class="nav-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+</nav>
+
+<div class="main-container">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+        <h2 id="welcomeName">Welcome, Student!</h2>
+        <p>Find and apply to your dream companies. Track your placement journey here.</p>
+        <div class="stats-row">
+            <div class="stat-pill"><i class="fas fa-building"></i> <span id="totalCompaniesCount">0</span> Companies</div>
+            <div class="stat-pill"><i class="fas fa-check-circle"></i> <span id="openCompaniesCount">0</span> Active Drives</div>
+            <div class="stat-pill"><i class="fas fa-star"></i> Apply to eligible opportunities</div>
+        </div>
+    </div>
+
+    <div class="dashboard-layout">
+        <!-- Main Content - Companies List -->
+        <div>
+            <div class="companies-header">
+                <h2><i class="fas fa-briefcase"></i> Placement Opportunities</h2>
+                <div class="company-count" id="companyCountDisplay">Loading...</div>
+            </div>
+            <div id="companyList" class="company-grid">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading companies...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="avatar" id="avatar">S</div>
+                    <div class="profile-info">
+                        <h3 id="studentName">Student Name</h3>
+                        <p id="studentEmail">student@example.com</p>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-graduation-cap"></i> Branch</span>
+                    <span class="info-value" id="studentBranch">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar"></i> Year</span>
+                    <span class="info-value" id="studentYear">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-star"></i> CGPA</span>
+                    <span class="info-value" id="studentCgpa">-</span>
+                </div>
+                <div class="skills-preview">
+                    <div class="skills-label"><i class="fas fa-code"></i> Your Skills</div>
+                    <div id="studentSkills" class="skills-list"></div>
+                </div>
+            </div>
+
+            <!-- Filters Card -->
+            <div class="filter-card">
+                <h3><i class="fas fa-filter"></i> Smart Filters</h3>
+                <div class="filter-group">
+                    <label><i class="fas fa-code-branch"></i> Branch</label>
+                    <select id="filterBranch" class="filter-select">
+                        <option value="">All Branches</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Electronics">Electronics & Communication</option>
+                        <option value="Mechanical">Mechanical Engineering</option>
+                        <option value="Civil">Civil Engineering</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-star"></i> Min CGPA</label>
+                    <input type="number" id="filterMinCgpa" class="filter-input" placeholder="Enter your CGPA" step="0.1" min="0" max="10">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-tools"></i> Skill</label>
+                    <input type="text" id="filterSkill" class="filter-input" placeholder="e.g., Java, Python">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-chart-line"></i> Status</label>
+                    <select id="filterStatus" class="filter-select">
+                        <option value="">All</option>
+                        <option value="Open">Open</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="filterEligibleOnly" style="width: 18px; height: 18px; cursor: pointer;">
+                        <span>Show Only Eligible</span>
+                    </label>
+                </div>
+                <div class="filter-actions">
+                    <button id="applyFilters" class="filter-btn filter-btn-primary"><i class="fas fa-search"></i> Apply</button>
+                    <button id="clearFilters" class="filter-btn filter-btn-secondary"><i class="fas fa-undo"></i> Reset</button>
+                </div>
+            </div>
+
+            <!-- Info Card -->
+            <div class="info-card">
+                <h3><i class="fas fa-info-circle"></i> Eligibility Guide</h3>
+                <ul>
+                    <li>Your CGPA must meet or exceed company criteria</li>
+                    <li>At least one skill must match company requirements</li>
+                    <li>Your branch must be in allowed branches (if specified)</li>
+                    <li>Apply only to "Open" drives</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+    // Utility functions
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function parseNumber(val) {
+        if (val === null || val === undefined) return NaN;
+        const num = parseFloat(String(val).replace(/[^\d.-]/g, ''));
+        return isNaN(num) ? NaN : num;
+    }
+
+    function splitSkills(skillsRaw) {
+        if (!skillsRaw) return [];
+        if (Array.isArray(skillsRaw)) return skillsRaw.map(s => String(s).trim()).filter(Boolean);
+        return String(skillsRaw).split(/[,;|\/]/).map(s => s.trim()).filter(Boolean);
+    }
+
+    function getCompanyField(company, ...fields) {
+        for (const field of fields) {
+            if (company[field] !== undefined && company[field] !== null) return company[field];
+        }
+        return '';
+    }
+
+    // Eligibility check
+    function isEligible(student, company) {
+        // Admin blocks
+        if (student.blockedByAdmin && !student.manualUnblockOverride) {
+            return { ok: false, reason: "Blocked by Admin. Please contact T&P office." };
+        }
+
+        // Internship already secured block (except dream companies)
+        const isDream = company.dreamCompany || (getCompanyField(company, 'companyCategory') || '').toLowerCase() === 'dream';
+        if (student.internshipSecured && !isDream) {
+            return { ok: false, reason: "Internship secured. Can only apply for Dream Companies." };
+        }
+
+        // CGPA check
+        const compCrit = getCompanyField(company, 'criteria', 'eligibility', 'minCgpa');
+        const compCritNum = parseNumber(compCrit);
+        const studentCgpa = parseNumber(student.cgpa || student.CGPA);
+
+        if (!isNaN(compCritNum)) {
+            if (isNaN(studentCgpa) || studentCgpa < compCritNum) {
+                return { ok: false, reason: `CGPA requirement: ≥ ${compCritNum} (Your CGPA: ${isNaN(studentCgpa) ? 'N/A' : studentCgpa.toFixed(2)})` };
+            }
+        }
+
+        // Skills check
+        const studentSkills = splitSkills(student.skills || student.skillsRaw || '');
+        const companySkills = splitSkills(getCompanyField(company, 'skills', 'requiredSkills', 'skillSet'));
+        
+        if (companySkills.length > 0) {
+            const matched = companySkills.some(cs => 
+                studentSkills.some(ss => ss.toLowerCase() === cs.toLowerCase())
+            );
+            if (!matched) {
+                return { ok: false, reason: `Skills required: ${companySkills.slice(0, 3).join(', ')}${companySkills.length > 3 ? '...' : ''}` };
+            }
+        }
+
+        // Branch check
+        const allowedBranches = getCompanyField(company, 'allowedBranches', 'branches', 'branchAllowed');
+        if (allowedBranches) {
+            const allowedList = splitSkills(allowedBranches);
+            const studentBranch = (student.branch || '').trim();
+            if (allowedList.length > 0 && studentBranch && !allowedList.some(b => b.toLowerCase() === studentBranch.toLowerCase())) {
+                return { ok: false, reason: `Not open for ${studentBranch} branch` };
+            }
+        }
+
+        return { ok: true };
+    }
+
+    // Render company card
+    function renderCompanyCard(company, student) {
+        const name = getCompanyField(company, 'companyName', 'company_name', 'name') || 'Company';
+        const skills = getCompanyField(company, 'skills', 'requiredSkills') || '';
+        const criteria = getCompanyField(company, 'criteria', 'eligibility', 'minCgpa') || 'Not specified';
+        const status = getCompanyField(company, 'status') || 'Open';
+        const description = getCompanyField(company, 'description', 'role') || '';
+        
+        const eligibility = isEligible(student, company);
+        const skillsList = splitSkills(skills);
+        const isOpen = status.toLowerCase() === 'open';
+        const canApply = eligibility.ok && isOpen;
+
+        return `
+            <div class="company-card" data-company-id="${company.id || company._id || ''}">
+                <div class="card-header">
+                    <div class="company-name">
+                        <i class="fas fa-building"></i>
+                        ${escapeHtml(name)}
+                    </div>
+                    <div class="status-badge ${isOpen ? 'status-open' : 'status-closed'}">
+                        <i class="fas ${isOpen ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                        ${escapeHtml(status)}
+                    </div>
+                </div>
+                ${description ? `<div class="company-meta"><i class="fas fa-info-circle"></i> ${escapeHtml(description)}</div>` : ''}
+                <div class="company-meta">
+                    <span><i class="fas fa-chart-line"></i> Criteria: ${escapeHtml(criteria)}</span>
+                </div>
+                <div class="skills-section">
+                    <div class="skills-label"><i class="fas fa-tools"></i> Required Skills</div>
+                    <div class="skills-list">
+                        ${skillsList.length ? skillsList.map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('') : '<span class="skill-tag">Not specified</span>'}
+                    </div>
+                </div>
+                ${!eligibility.ok ? `
+                    <div class="criteria-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="criteria-text">${escapeHtml(eligibility.reason)}</div>
+                    </div>
+                ` : ''}
+                <div class="card-footer">
+                    <div class="eligibility-reason">
+                        ${eligibility.ok && isOpen ? '<i class="fas fa-check-circle" style="color: var(--success);"></i> You are eligible!' : (eligibility.ok && !isOpen ? '<i class="fas fa-clock"></i> Drive closed, check back later' : '')}
+                    </div>
+                    <button class="apply-btn" ${!canApply ? 'disabled' : ''} data-company-id="${company.id || company._id || ''}" data-company-name="${escapeHtml(name)}">
+                        <i class="fas ${canApply ? 'fa-paper-plane' : 'fa-lock'}"></i>
+                        ${canApply ? 'Apply Now' : 'Not Eligible'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'success') {
+        let toast = document.querySelector('.toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.className = 'toast';
+            document.body.appendChild(toast);
+        }
+        const colors = { success: '#10b981', error: '#ef4444', info: '#3b82f6' };
+        toast.style.borderLeftColor = colors[type] || colors.success;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}" style="color: ${colors[type]}; font-size: 20px;"></i><span>${message}</span>`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Apply to company
+    async function applyToCompany(studentId, companyId, companyName) {
+        if (!confirm(`Are you sure you want to apply to ${companyName}?`)) return;
+        try {
+            const r = await apiFetch(`/student/apply/${companyId}?studentId=${studentId}`, {
+                method: "POST"
+            });
+            
+            if (r.ok) {
+                showToast(`Successfully applied to ${companyName}! 🎉`, 'success');
+                // Refresh data to show "Applied" button
+                loadCompanies();
+                return true;
+            } else {
+                showToast(`Failed to apply: ${r.error || 'Server error'}`, 'error');
+                return false;
+            }
+        } catch (error) {
+            console.error("Apply error:", error);
+            showToast(`Application failed: ${error.message}`, 'error');
+            return false;
+        }
+    }
+
+    // Main app
+    (async function main() {
+        const studentId = localStorage.getItem('studentId');
+        const token = localStorage.getItem('token');
+
+        if (!studentId || !token) {
+            window.location.href = 'student_login.html';
+            return;
+        }
+
+        // Load student data
+        let student = null;
+        try {
+            const res = await getStudentProfile(studentId);
+            if (!res.ok) throw new Error(res.error || 'Student profile fetch failed');
+            student = res.data;
+            if (!student) throw new Error('Student data not found');
+        } catch (error) {
+            console.error('Student load error:', error);
+            showToast('Session expired or profile load failed. Redirecting to login...', 'error');
+            setTimeout(() => {
+                localStorage.clear();
+                window.location.href = 'student_login.html';
+            }, 2500);
+            return;
+        }
+
+        // Update UI with student data
+        document.getElementById('welcomeName').textContent = `Welcome, ${student.name || student.full_name || 'Student'}!`;
+        document.getElementById('studentName').textContent = student.name || student.full_name || 'Student';
+        document.getElementById('studentEmail').textContent = student.email || student.emailId || 'student@example.com';
+        document.getElementById('studentBranch').textContent = student.branch || 'Not specified';
+        document.getElementById('studentYear').textContent = student.year || 'Not specified';
+        document.getElementById('studentCgpa').textContent = student.cgpa || student.CGPA || 'Not specified';
+        
+        const studentSkills = splitSkills(student.skills || student.skillsRaw || '');
+        const skillsContainer = document.getElementById('studentSkills');
+        skillsContainer.innerHTML = studentSkills.length ? 
+            studentSkills.map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('') : 
+            '<span class="skill-tag">No skills added</span>';
+        
+        document.getElementById('avatar').textContent = (student.name || 'S').slice(0, 2).toUpperCase();
+
+        // Load companies
+        let companies = [];
+        try {
+            companies = await getCompanies();
+            if (!companies || !companies.length) companies = [];
+        } catch (error) {
+            console.error('Companies load error:', error);
+            companies = [];
+        }
+
+        // Update counts
+        const openCount = companies.filter(c => (getCompanyField(c, 'status') || '').toLowerCase() === 'open').length;
+        document.getElementById('totalCompaniesCount').textContent = companies.length;
+        document.getElementById('openCompaniesCount').textContent = openCount;
+
+        // Filter and render function
+        function filterAndRender() {
+            const branchFilter = document.getElementById('filterBranch').value.trim();
+            const minCgpa = parseNumber(document.getElementById('filterMinCgpa').value);
+            const skillFilter = document.getElementById('filterSkill').value.trim().toLowerCase();
+            const statusFilter = document.getElementById('filterStatus').value;
+            const eligibleOnly = document.getElementById('filterEligibleOnly').checked;
+
+            let filtered = companies.slice();
+
+            // Eligibility filter
+            if (eligibleOnly) {
+                filtered = filtered.filter(c => isEligible(student, c).ok);
+            }
+
+            // Branch filter
+            if (branchFilter) {
+                filtered = filtered.filter(c => {
+                    const allowed = getCompanyField(c, 'allowedBranches', 'branches', 'branchAllowed');
+                    if (!allowed) return true;
+                    const allowedList = splitSkills(allowed).map(x => x.toLowerCase());
+                    return allowedList.includes(branchFilter.toLowerCase());
+                });
+            }
+
+            // CGPA filter
+            if (!isNaN(minCgpa) && minCgpa > 0) {
+                filtered = filtered.filter(c => {
+                    const crit = parseNumber(getCompanyField(c, 'criteria', 'eligibility', 'minCgpa'));
+                    return isNaN(crit) ? true : crit <= minCgpa;
+                });
+            }
+
+            // Skill filter
+            if (skillFilter) {
+                filtered = filtered.filter(c => {
+                    const compSkills = splitSkills(getCompanyField(c, 'skills', 'requiredSkills')).map(s => s.toLowerCase());
+                    return compSkills.some(s => s.includes(skillFilter));
+                });
+            }
+
+            // Status filter
+            if (statusFilter) {
+                filtered = filtered.filter(c => {
+                    const compStatus = (getCompanyField(c, 'status') || '').toLowerCase();
+                    return compStatus === statusFilter.toLowerCase();
+                });
+            }
+
+            const container = document.getElementById('companyList');
+            document.getElementById('companyCountDisplay').textContent = `${filtered.length} companies`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-search"></i></div>
+                        <div class="empty-title">No companies found</div>
+                        <div class="empty-text">Try adjusting your filters or check back later for new opportunities</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(c => renderCompanyCard(c, student)).join('');
+
+            // Add event listeners to apply buttons
+            document.querySelectorAll('.apply-btn:not(:disabled)').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const companyId = btn.dataset.companyId;
+                    const companyName = btn.dataset.companyName;
+                    await applyToCompany(studentId, companyId, companyName);
+                });
+            });
+        }
+
+        // Event listeners
+        document.getElementById('applyFilters').addEventListener('click', filterAndRender);
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.getElementById('filterBranch').value = '';
+            document.getElementById('filterMinCgpa').value = '';
+            document.getElementById('filterSkill').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterEligibleOnly').checked = false;
+            filterAndRender();
+        });
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('studentId');
+            window.location.href = 'student_login.html';
+        });
+
+        // Initial render
+        filterAndRender();
+    })();
+</script>
+</body>
+</html>

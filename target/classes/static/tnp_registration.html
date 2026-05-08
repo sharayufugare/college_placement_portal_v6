@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TNP Admin | Coordinator Registration</title>
+  <!-- Google Fonts & simple CSS reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #e9eff8 0%, #dbe3ef 100%);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    /* main card container */
+    .registration-card {
+      max-width: 680px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .registration-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* header branding */
+    .tnp-header {
+      background: #0b2b3b;
+      padding: 1.6rem 2rem;
+      color: white;
+    }
+
+    .tnp-header h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tnp-header h1 span {
+      background: #ffb347;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 40px;
+      color: #1e2a32;
+    }
+
+    .tnp-header p {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      opacity: 0.85;
+      font-weight: 500;
+    }
+
+    /* form content */
+    .form-container {
+      padding: 2rem 2rem 2.2rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #2c3e50;
+      margin-bottom: 6px;
+    }
+
+    .input-group label .required-star {
+      color: #e03a3a;
+      margin-left: 3px;
+    }
+
+    .input-group input, 
+    .input-group select {
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-family: 'Inter', monospace;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      background: #fefefe;
+      transition: all 0.2s;
+      outline: none;
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: #2c7da0;
+      box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+    }
+
+    /* hint & validation message */
+    .hint {
+      font-size: 0.7rem;
+      color: #5b6e8c;
+      margin-top: 5px;
+      margin-left: 6px;
+    }
+
+    .error-message {
+      font-size: 0.75rem;
+      color: #d14545;
+      margin-top: 5px;
+      margin-left: 6px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    /* role chip display (role is coordinator preset but we show it visually) */
+    .role-badge {
+      background: #eef2ff;
+      border-radius: 40px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    .role-badge span:first-child {
+      font-weight: 700;
+      color: #1e3a5f;
+    }
+
+    .role-badge .role-value {
+      background: #0b2b3b;
+      color: white;
+      padding: 4px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* button */
+    .register-btn {
+      background: #0f2f3c;
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px 24px;
+      width: 100%;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .register-btn:hover {
+      background: #1e4a62;
+    }
+
+    .register-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* success / error toast style (inline status) */
+    .status-msg {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: 0.2s;
+      display: none;
+    }
+
+    .status-msg.success {
+      background: #dcfce7;
+      color: #15803d;
+      border-left: 5px solid #15803d;
+      display: block;
+    }
+
+    .status-msg.error {
+      background: #ffe8e8;
+      color: #b91c1c;
+      border-left: 5px solid #b91c1c;
+      display: block;
+    }
+
+    hr {
+      margin: 10px 0 18px;
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, #cbd5e1, transparent);
+    }
+
+    @media (max-width: 550px) {
+      .form-container {
+        padding: 1.5rem;
+      }
+      .tnp-header h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* department select custom */
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23334455" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+  </style>
+</head>
+<body>
+<div class="registration-card">
+  <div class="tnp-header">
+    <h1>
+      📋 TNP Admin Portal 
+      <span>Coordinator Onboarding</span>
+    </h1>
+    <p>Training & Placement Cell | PCCOER</p>
+  </div>
+  <div class="form-container">
+    <div class="role-badge">
+      <span>🔐 Assigned role :</span>
+      <span class="role-value">TNP Coordinator</span>
+      <span style="font-size: 0.7rem; color:#4a627a;">(predefined – full access)</span>
+    </div>
+
+    <form id="registrationForm" novalidate>
+      <!-- Full name (display name) -->
+      <div class="input-group">
+        <label>Full Name <span class="required-star">*</span></label>
+        <input type="text" id="full_name" name="fullName" placeholder="e.g., Prof. Aditya Kulkarni" autocomplete="name">
+        <div class="hint">Enter your complete legal name</div>
+        <div class="error-message" id="fullNameError">Full name is required (at least 3 characters)</div>
+      </div>
+
+      <!-- Name (additional field: 'name' as per requirement - but we also need name field? spec says name, email, department, full_name, role. So we include both name & full_name -->
+      <div class="input-group">
+        <label>Username / Short Name <span class="required-star">*</span></label>
+        <input type="text" id="name" name="name" placeholder="e.g., aditya.tnp" autocomplete="username">
+        <div class="hint">Unique coordinator identifier (will be used for login)</div>
+        <div class="error-message" id="nameError">Short name is required (min 2 characters)</div>
+      </div>
+
+      <div class="input-group">
+        <label>Password <span class="required-star">*</span></label>
+        <input type="password" id="password" name="password" placeholder="Create a secure password" autocomplete="new-password">
+        <div class="hint">At least 6 characters. This password secures your coordinator account.</div>
+        <div class="error-message" id="passwordError">Password is required and must be at least 6 characters</div>
+      </div>
+
+      <div class="input-group">
+        <label>Confirm Password <span class="required-star">*</span></label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" autocomplete="new-password">
+        <div class="hint">Re-enter the password to confirm.</div>
+        <div class="error-message" id="confirmPasswordError">Passwords must match</div>
+      </div>
+
+      <!-- Email with @pccoer.in validation -->
+      <div class="input-group">
+        <label>Email Address <span class="required-star">*</span></label>
+        <input type="email" id="email" name="email" placeholder="coordinator.name@pccoer.in" autocomplete="email">
+        <div class="hint">Must end with <strong>@pccoer.in</strong> (institution domain)</div>
+        <div class="error-message" id="emailError">Email must be a valid @pccoer.in address (e.g., name@pccoer.in)</div>
+      </div>
+
+      <!-- Department dropdown (required) -->
+      <div class="input-group">
+        <label>Department <span class="required-star">*</span></label>
+        <select id="department" name="department">
+          <option value="" disabled selected>– Select Department –</option>
+          <option value="Computer Engineering">Computer Engineering</option>
+          <option value="Information Technology">Information Technology</option>
+          <option value="Electronics & Telecommunication">Electronics & Telecommunication</option>
+          <option value="Mechanical Engineering">Mechanical Engineering</option>
+          <option value="Civil Engineering">Civil Engineering</option>
+          <option value="Artificial Intelligence & Data Science">Artificial Intelligence & Data Science</option>
+          <option value="MBA">MBA</option>
+          <option value="First Year Engineering">First Year Engineering</option>
+        </select>
+        <div class="error-message" id="deptError">Please select a department</div>
+      </div>
+
+      <!-- role field: hidden but we capture role value 'TNP Coordinator' -->
+      <input type="hidden" id="role" name="role" value="TNP Coordinator">
+
+      <!-- additional note: register button -->
+      <button type="submit" class="register-btn">
+        ✨ Register as TNP Coordinator
+      </button>
+      <div id="formStatus" class="status-msg"></div>
+    </form>
+
+    <hr />
+    <div style="font-size: 0.7rem; text-align: center; color: #5f7f9e;">
+      ⚡ Official PCCOER TNP portal | Coordinator credentials will be verified
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function getApiBaseUrl() {
+      const { protocol, hostname, port, origin } = window.location;
+      const localHost = hostname === "localhost" || hostname === "127.0.0.1";
+      const servedByBackend = localHost && port === "9090";
+      if (servedByBackend) return origin;
+      if (protocol === "file:") return "http://localhost:9090";
+      if (localHost) return "http://localhost:9090";
+      return origin;
+    }
+
+    const API_BASE_URL = getApiBaseUrl();
+
+    const form = document.getElementById('registrationForm');
+    
+    // Input elements
+    const fullNameInput = document.getElementById('full_name');
+    const nameInput = document.getElementById('name');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const emailInput = document.getElementById('email');
+    const departmentSelect = document.getElementById('department');
+    const roleHidden = document.getElementById('role');   // hidden, value = "TNP Coordinator"
+    
+    // Error spans
+    const fullNameError = document.getElementById('fullNameError');
+    const nameError = document.getElementById('nameError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const emailError = document.getElementById('emailError');
+    const deptError = document.getElementById('deptError');
+    const statusDiv = document.getElementById('formStatus');
+    
+    // Helper: reset specific error style and hide message
+    function resetFieldError(inputElement, errorElement) {
+      if (inputElement) inputElement.style.borderColor = '';
+      if (errorElement) errorElement.classList.remove('show');
+    }
+    
+    function setFieldError(inputElement, errorElement, show = true) {
+      if (inputElement) inputElement.style.borderColor = show ? '#e03a3a' : '';
+      if (errorElement) {
+        if (show) errorElement.classList.add('show');
+        else errorElement.classList.remove('show');
+      }
+    }
+    
+    // Email validation: must end with @pccoer.in (case-insensitive)
+    function isValidPccoerEmail(email) {
+      if (!email || typeof email !== 'string') return false;
+      const trimmed = email.trim().toLowerCase();
+      // regex: any characters before @pccoer.in, but must have @pccoer.in exactly at end
+      // also ensure there is no extra dot after domain and email pattern overall.
+      const pattern = /^[a-zA-Z0-9._%+-]+@pccoer\.in$/i;
+      return pattern.test(trimmed);
+    }
+    
+    // general required validation
+    function validateForm() {
+      let isValid = true;
+      
+      const fullNameVal = fullNameInput.value.trim();
+      if (fullNameVal.length < 3) {
+        setFieldError(fullNameInput, fullNameError, true);
+        isValid = false;
+      } else {
+        setFieldError(fullNameInput, fullNameError, false);
+      }
+      
+      const nameVal = nameInput.value.trim();
+      if (nameVal.length < 2) {
+        setFieldError(nameInput, nameError, true);
+        isValid = false;
+      } else {
+        setFieldError(nameInput, nameError, false);
+      }
+      
+      const passwordVal = passwordInput.value.trim();
+      if (passwordVal.length < 6) {
+        setFieldError(passwordInput, passwordError, true);
+        isValid = false;
+      } else {
+        setFieldError(passwordInput, passwordError, false);
+      }
+      
+      const confirmPasswordVal = confirmPasswordInput.value.trim();
+      if (confirmPasswordVal !== passwordVal || confirmPasswordVal.length === 0) {
+        setFieldError(confirmPasswordInput, confirmPasswordError, true);
+        isValid = false;
+      } else {
+        setFieldError(confirmPasswordInput, confirmPasswordError, false);
+      }
+      
+      const emailVal = emailInput.value.trim();
+      if (!isValidPccoerEmail(emailVal)) {
+        setFieldError(emailInput, emailError, true);
+        isValid = false;
+      } else {
+        setFieldError(emailInput, emailError, false);
+      }
+      
+      const deptVal = departmentSelect.value;
+      if (!deptVal || deptVal === "") {
+        setFieldError(departmentSelect, deptError, true);
+        isValid = false;
+      } else {
+        setFieldError(departmentSelect, deptError, false);
+      }
+      
+      return isValid;
+    }
+    
+    // Function to display status message (success or error)
+    function showStatus(message, type) {
+      statusDiv.textContent = message;
+      statusDiv.className = `status-msg ${type}`;
+      statusDiv.style.display = 'block';
+      setTimeout(() => {
+        if (statusDiv.className.includes(type) && statusDiv.textContent === message) {
+          statusDiv.style.display = 'none';
+          statusDiv.className = 'status-msg';
+        }
+      }, 6000);
+    }
+    
+    async function submitRegistration(registrationData) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(registrationData)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          showStatus(`Server response error: ${errorText}`, 'error');
+          return false;
+        }
+
+        const data = await response.json();
+        if (data.status === 'success') {
+          showStatus(`✅ Registration successful! Welcome, ${registrationData.full_name}. You are now registered as ${registrationData.role}.`, 'success');
+          form.reset();
+          roleHidden.value = 'TNP Coordinator';
+          return true;
+        }
+
+        showStatus(data.message || 'Registration failed. Please try again.', 'error');
+        return false;
+      } catch (error) {
+        console.error('Registration request failed', error);
+        showStatus('Registration request failed. Check your network or try again later.', 'error');
+        return false;
+      }
+    }
+    
+    // Handle form submission event
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // hide any previous status
+      statusDiv.style.display = 'none';
+      statusDiv.className = 'status-msg';
+      
+      // perform frontend validation
+      const valid = validateForm();
+      if (!valid) {
+        showStatus('Please correct the highlighted errors before submitting.', 'error');
+        // scroll to first error gently
+        const firstError = document.querySelector('.error-message.show');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      
+      // Gather data
+      const full_name = fullNameInput.value.trim();
+      const name = nameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const email = emailInput.value.trim().toLowerCase();   // store normalized lowercase
+      const department = departmentSelect.value;
+      const role = roleHidden.value;   // "TNP Coordinator"
+      
+      // Build payload object as per specification: username, password, email, department, full_name, role
+      const payload = {
+        username: name,
+        password: password,
+        email: email,
+        department: department,
+        full_name: full_name,
+        role: role
+      };
+      
+      // optional: additional frontend check for email domain already done.
+      // double-check just for safety
+      if (!isValidPccoerEmail(email)) {
+        setFieldError(emailInput, emailError, true);
+        showStatus('Invalid email domain. Must end with @pccoer.in', 'error');
+        return;
+      }
+      
+      // submit registration through backend API
+      submitRegistration(payload);
+    });
+    
+    // real-time inline validation improvement: live email hint & clear errors on typing
+    emailInput.addEventListener('input', function() {
+      const val = emailInput.value.trim();
+      if (val.length > 0 && !isValidPccoerEmail(val)) {
+        setFieldError(emailInput, emailError, true);
+      } else if (val.length > 0 && isValidPccoerEmail(val)) {
+        setFieldError(emailInput, emailError, false);
+      } else if (val.length === 0) {
+        // empty, we might not show error until submit but we respect realtime
+        setFieldError(emailInput, emailError, false);
+      } else {
+        setFieldError(emailInput, emailError, false);
+      }
+    });
+    
+    fullNameInput.addEventListener('input', function() {
+      const val = fullNameInput.value.trim();
+      if (val.length >= 3) setFieldError(fullNameInput, fullNameError, false);
+      else if (val.length === 0) setFieldError(fullNameInput, fullNameError, false); // hide until submit
+      else setFieldError(fullNameInput, fullNameError, true);
+    });
+    
+    nameInput.addEventListener('input', function() {
+      const val = nameInput.value.trim();
+      if (val.length >= 2) setFieldError(nameInput, nameError, false);
+      else setFieldError(nameInput, nameError, true);
+    });
+    
+    departmentSelect.addEventListener('change', function() {
+      if (departmentSelect.value && departmentSelect.value !== "") {
+        setFieldError(departmentSelect, deptError, false);
+      } else {
+        setFieldError(departmentSelect, deptError, true);
+      }
+    });
+    
+    // Also handle blur to give user feedback
+    fullNameInput.addEventListener('blur', function() {
+      if (fullNameInput.value.trim().length < 3 && fullNameInput.value.trim().length > 0) {
+        setFieldError(fullNameInput, fullNameError, true);
+      } else if (fullNameInput.value.trim().length === 0) {
+        setFieldError(fullNameInput, fullNameError, false);
+      } else if (fullNameInput.value.trim().length >= 3) {
+        setFieldError(fullNameInput, fullNameError, false);
+      }
+    });
+    
+    nameInput.addEventListener('blur', function() {
+      const val = nameInput.value.trim();
+      if (val.length === 0) setFieldError(nameInput, nameError, false);
+      else if (val.length < 2) setFieldError(nameInput, nameError, true);
+      else setFieldError(nameInput, nameError, false);
+    });
+    
+    emailInput.addEventListener('blur', function() {
+      const val = emailInput.value.trim();
+      if (val && !isValidPccoerEmail(val)) {
+        setFieldError(emailInput, emailError, true);
+      } else if (val && isValidPccoerEmail(val)) {
+        setFieldError(emailInput, emailError, false);
+      } else {
+        setFieldError(emailInput, emailError, false);
+      }
+    });
+    
+    // initial: ensure hidden role value is exactly TNP Coordinator
+    if (roleHidden.value !== "TNP Coordinator") roleHidden.value = "TNP Coordinator";
+  })();
+</script>
+</body>
+</html>
