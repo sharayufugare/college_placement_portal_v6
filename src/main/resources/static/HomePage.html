@@ -413,10 +413,20 @@
 
 <!-- smooth scroll behavior for anchor links -->
 <script>
+    function getApiBaseUrl() {
+        const { protocol, hostname, port, origin } = window.location;
+        const localHost = hostname === 'localhost' || hostname === '127.0.0.1';
+        if (protocol === 'file:') return 'http://localhost:9090';
+        if (localHost) return origin;
+        return origin;
+    }
+
+    const API_BASE_URL = getApiBaseUrl();
+
     async function loadCoordinators() {
         const listContainer = document.getElementById('coordinatorList');
         try {
-            const res = await fetch('/api/admin/coordinators');
+            const res = await fetch(`${API_BASE_URL}/api/admin/coordinators`);
             if (!res.ok) {
                 throw new Error(`Failed to load coordinators: ${res.status}`);
             }
@@ -440,8 +450,9 @@
                 </div>
             `).join('');
         } catch (error) {
-            listContainer.innerHTML = `<div class="glass-card-modern p-10 text-center text-red-600 border border-dashed border-red-200 rounded-3xl">Unable to load coordinators right now.</div>`;
-            console.error(error);
+            const message = error instanceof Error ? error.message : String(error);
+            listContainer.innerHTML = `<div class="glass-card-modern p-10 text-center text-red-600 border border-dashed border-red-200 rounded-3xl">Unable to load coordinators right now.<br><span class="text-sm text-red-700">${message}</span></div>`;
+            console.error('Coordinator load failed:', error);
         }
     }
 
